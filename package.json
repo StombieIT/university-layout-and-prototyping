@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "webpack",
     "start": "webpack serve --open"
   },
   "repository": {
@@ -20,6 +21,7 @@
     "@babel/core": "^7.22.19",
     "babel-loader": "^9.1.3",
     "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
     "html-webpack-plugin": "^5.5.3",
     "sass": "^1.67.0",

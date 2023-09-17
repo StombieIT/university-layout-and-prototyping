@@ -2,47 +2,149 @@
 <html>
     <head></head>
     <body>
-        <div id="image">
-            <div class="fish __left">
-                <div class="fish-tail"></div>
-                <div class="fish-tail __left"></div>
-                <div class="fish-body">
-                    <div class="flape __middle"></div>
-                    <div class="flape __upper"></div>
-                    <div class="flape __lower"></div>
-                    <div class="flape __primary"></div>
-                    <div class="eye"></div>
+        <nav class="navbar">
+            <h3 class="navbar-header">ANIMEGO</h3>
+            <ul class="navbar-links">
+                <li class="navbar-link">Anime</li>
+                <li class="navbar-link">Manga</li>
+                <li class="navbar-link">Random Anime</li>
+                <li class="navbar-link">Top Anime</li>
+                <li class="navbar-link">Friends</li>
+            </ul>
+            <div class="navbar-controls">
+                <input class="navbar-search-field" />
+                <button type="button" class="btn __clear __round __notifications" />
+                <button type="button" class="btn __clear __round">
+                    <img src="#" alt="avatar">
+                </button>
+                <button type="button" class="btn __clear __quit" />
+            </div>
+        </nav>
+        <main>
+            <div class="container">
+                <h1 class="anime-title">
+                    Demon Slayer: Kimetsu no Yaiba
+                </h1>
+                <div class="anime-meta">
+                    <div class="anime-rating">
+                        9.2<span class="anime-rating-max">/10</span>
+                    </div>
+                    <div class="anime-age-limit">16+</div>
+                    <div class="anime-episodes">25 Episodes</div>
+                    <div class="anime-duration">23min</div>
+                </div>
+                <div class="anime-carousel">
+                    <div class="anime-carousel-wrapper">
+                        <div class="anime-carousel-items"></div>
+                    </div>
+                    <div class="anime-carousel-arrows">
+                        <button type="button" class="btn __clear __arrow-left" />
+                        <button type="button" class="btn __clear __arrow-right" />
+                    </div>
+                </div>
+                <div class="anime-tags">
+                    <div class="anime-tag">Action</div>
+                    <div class="anime-tag">Demons</div>
+                    <div class="anime-tag">Historical</div>
+                    <div class="anime-tag">Shounen</div>
+                </div>
+                <div class="anime-description">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ab eos et fuga in labore molestiae molestias nulla officia qui repellendus, rerum vel, veniam voluptate!
                 </div>
             </div>
-            <div class="fish __right">
-                <div class="fish-tail"></div>
-                <div class="fish-body">
-                    <div class="flape __middle"></div>
-                    <div class="flape __upper"></div>
-                    <div class="flape __lower"></div>
-                    <div class="flape __primary"></div>
-                    <div class="eye"></div>
+            <div class="video-part">
+                <div class="container">
+                    <div class="video-part_left-column">
+                        <div class="seasons">
+                            <button type="button" class="btn __clear" disabled>Season 1</button>
+                            <button type="button" class="btn __clear __light">Season 2</button>
+                            <button type="button" class="btn __clear __light">Season 3</button>
+                            <button type="button" class="btn __clear __light">Season 4</button>
+                            <button type="button" class="btn __clear __light">Season 5</button>
+                            <button type="button" class="btn __clear __light">Season 6</button>
+                        </div>
+                        <div class="video-overlay">
+                            <h2 class="header __video">Season 1: Episode 1</h2>
+                            <img class="video-cover" src="#" alt="">
+                            <video class="video-instance" src="#"></video>
+                            <div class="video-controls">
+                                <div class="episodes">
+                                    <button type="button" class="btn __clear" disabled>Episode 1</button>
+                                    <button type="button" class="btn __clear __transparent">Episode 2</button>
+                                    <button type="button" class="btn __clear __transparent">Episode 3</button>
+                                    <button type="button" class="btn __clear __transparent">Episode 4</button>
+                                    <button type="button" class="btn __clear __transparent">Episode 5</button>
+                                    <button type="button" class="btn __clear __transparent">Episode 6</button>
+                                </div>
+                                <button type="button" class="btn __clear __transparent __arrow-left" />
+                                <button type="button" class="btn __clear __transparent __arrow-right" />
+                            </div>
+                        </div>
+                        <section class="invitations">
+                            <h6 class="invitation-header">Invite friends</h6>
+                            <button type="button" class="btn __clear __dashed __add" />
+                            <button type="button" class="btn __clear __dashed __add" />
+                            <button type="button" class="__clear __dashed __add" />
+                            <button type="button" class="btn __clear __dashed __add" />
+                            <button type="button" class="btn __clear __dashed __add" />
+                        </section>
+                    </div>
+                    <section class="video-part_right-column">
+                        <div class="video-comments-meta">
+                            <h3 class="header">Comments</h3>
+                            <div class="comments-count-info"></div>
+                        </div>
+                        <div class="comment-field">
+                            <textarea class="comment-field" placeholder="Leave a comment"></textarea>
+                            <button type="btn __clear __send" />
+                        </div>
+                        <div class="comment">
+                            <div class="avatar-wrapper">
+                                <img class="avatar" src="#" alt="" />
+                            </div>
+                            <header class="comment-header">
+                                <h6 class="nickname"></h6>
+                                <span class="date-plural"></span>
+                            </header>
+                            <div class="comment-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam, ratione.</div>
+                        </div>
+                        <div class="comment">
+                            <div class="avatar-wrapper">
+                                <img class="avatar" src="#" alt="" />
+                            </div>
+                            <header class="comment-header">
+                                <h6 class="nickname"></h6>
+                                <span class="date-plural"></span>
+                            </header>
+                            <div class="comment-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, dignissimos voluptates. Id itaque soluta veritatis!</div>
+                        </div>
+                        <div class="comment">
+                            <div class="avatar-wrapper">
+                                <img class="avatar" src="#" alt="" />
+                            </div>
+                            <header class="comment-header">
+                                <h6 class="nickname"></h6>
+                                <span class="date-plural"></span>
+                            </header>
+                            <div class="comment-description">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores autem enim eum labore laborum, minima possimus provident quibusdam rerum voluptate!
+                            </div>
+                        </div>
+                        <div class="comment">
+                            <div class="avatar-wrapper">
+                                <img class="avatar" src="#" alt="" />
+                            </div>
+                            <header class="comment-header">
+                                <h6 class="nickname"></h6>
+                                <span class="date-plural"></span>
+                            </header>
+                            <div class="comment-description">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, tempora.
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
-            <div class="squiggle-w">
-                <div class="squiggle"></div>
-            </div>
-            <div class="squiggle-w __middle">
-                <div class="squiggle"></div>
-            </div>
-            <div class="squiggle-w __right">
-                <div class="squiggle"></div>
-            </div>
-            <div class="bottom">
-                <i class="bottom-stick"></i>
-                <i class="bottom-stick"></i>
-                <i class="bottom-stick"></i>
-                <i class="bottom-stick"></i>
-                <i class="bottom-stick"></i>
-                <i class="bottom-stick"></i>
-                <i class="bottom-stick"></i>
-                <i class="bottom-stick"></i>
-            </div>
-        </div>
+        </main>
     </body>
 </html>
