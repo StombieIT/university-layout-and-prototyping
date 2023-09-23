@@ -12,6 +12,13 @@ module.exports = {
         filename: "[name].[hash:10].js",
         path: path.resolve(__dirname, "dist")
     },
+    resolve: {
+        extensions: [".js"],
+        alias: {
+            "@utils": path.resolve(__dirname, "src", "utils"),
+            "@assets": path.resolve(__dirname, "src", "assets")
+        }
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "public", "index.html"),
@@ -23,10 +30,6 @@ module.exports = {
                     from: path.resolve(__dirname, "public"),
                     to: path.resolve(__dirname, "dist"),
                     filter: resourcePath=> !resourcePath.endsWith("index.html")
-                },
-                {
-                    from: path.resolve(__dirname, "src", "assets"),
-                    to: path.resolve(__dirname, "dist", "assets"),
                 }
             ]
         }),
@@ -53,6 +56,12 @@ module.exports = {
                     'style-loader',
                     'css-loader',
                     'sass-loader'
+                ]
+            },
+            {
+                test: /\.svg$/,
+                use: [
+                    'svg-inline-loader'
                 ]
             }
         ]
