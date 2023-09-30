@@ -155,17 +155,3 @@
   background-color: #e3af28;
   width: 6%;
 }
-
-.btn.__notifications {
-  position: relative;
-  width: fit-content;
-  height: fit-content;
-}
-
-.btn.__notifications:before {
-  display: block;
-  content: '';
-  width: 30px;
-  height: 30px;
-  background: center/cover url("./assets/notifications.svg") no-repeat;
-}

@@ -13,9 +13,9 @@
             </ul>
             <div class="navbar-controls">
                 <input class="navbar-search-field" placeholder="Search anime" />
-                <button type="button" class="btn __clear __primary __round __notifications" />
-                <button type="button" class="btn __clear __round">
-                    <img src="#" alt="avatar">
+                <button type="button" class="btn __clear __primary __round __medium __ic js-notifications" />
+                <button type="button" class="btn __clear __round __medium">
+                    <img class="img-adaptive" src="./avatar.jpg" alt="avatar">
                 </button>
                 <button type="button" class="btn __clear __quit" />
             </div>
@@ -23,23 +23,37 @@
         <main>
             <div class="container">
                 <h1 class="anime-title">
-                    Demon Slayer: Kimetsu no Yaiba
+                    JoJo's Bizarre Adventure
                 </h1>
                 <div class="anime-meta">
                     <div class="anime-rating">
+                        <span class="ic __star js-star"></span>
                         9.2<span class="anime-rating-max">/10</span>
                     </div>
                     <div class="anime-age-limit">16+</div>
-                    <div class="anime-episodes">25 Episodes</div>
+                    <div class="anime-episodes">57 Episodes</div>
                     <div class="anime-duration">23min</div>
                 </div>
                 <div class="anime-carousel">
                     <div class="anime-carousel-wrapper">
-                        <div class="anime-carousel-items"></div>
+                        <div class="anime-carousel-items">
+                            <div class="anime-carousel-item __player">
+                                <img class="img-adaptive" src="./bucciriati.jpg" />
+                                <button type="button" class="btn __clear __layer">
+                                    <span class="btn __clear __round __play js-play"></span>
+                                </button>
+                            </div>
+                            <div class="anime-carousel-item">
+                                <img class="img-adaptive" src="./dio.png" />
+                            </div>
+                            <div class="anime-carousel-item">
+                                <img class="img-adaptive" src="./enrico.png" />
+                            </div>
+                        </div>
                     </div>
                     <div class="anime-carousel-arrows">
-                        <button type="button" class="btn __clear __arrow-left" />
-                        <button type="button" class="btn __clear __arrow-right" />
+                        <button type="button" class="btn __clear __primary __round __medium __ic js-arrow-left" />
+                        <button type="button" class="btn __clear __primary __round __medium __ic js-arrow-right" />
                     </div>
                 </div>
                 <div class="anime-tags">

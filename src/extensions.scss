@@ -1,0 +1,9 @@
+@import "./vars";
+
+%magnifier {
+  transition: $time-x transform;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
