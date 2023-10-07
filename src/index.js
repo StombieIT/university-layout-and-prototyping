@@ -9,6 +9,39 @@ const ID_SMILE_OUTPUT_IM = "smile-output-im";
 const CAR_TRANSPORT = "car";
 const MOTO_TRANSPORT = "moto";
 
+class Store {
+    constructor({petrol}) {
+        this.observers = [];
+        this._petrol = petrol;
+    }
+
+    set transport(value) {
+        this._transport = value;
+        this.notify();
+    }
+
+    set petrol(value) {
+        this._petrol = value;
+        this.notify();
+    }
+
+    get state() {
+        return {
+            petrol: this._petrol,
+            transport: this._transport
+        };
+    }
+
+    subscribe = (observer) => {
+        this.observers.push(observer);
+        observer(this.state);
+    }
+
+    notify = () => {
+        this.observers.forEach(observer => observer(this.state));
+    }
+}
+
 window.addEventListener("load", () => {
     const isStarted = confirm("Приступаем?");
 
@@ -16,38 +49,6 @@ window.addEventListener("load", () => {
 
     const pathLength = Number(prompt("Введите длину пути"));
 
-    class Store {
-        constructor({petrol}) {
-            this.observers = [];
-            this._petrol = petrol;
-        }
-
-        set transport(value) {
-            this._transport = value;
-            this.notify();
-        }
-
-        set petrol(value) {
-            this._petrol = value;
-            this.notify();
-        }
-
-        get state() {
-            return {
-                petrol: this._petrol,
-                transport: this._transport
-            };
-        }
-
-        subscribe = (observer) => {
-            this.observers.push(observer);
-            observer(this.state);
-        }
-
-        notify = () => {
-            this.observers.forEach(observer => observer(this.state));
-        }
-    }
 
     const container = document.getElementById(ID_CONTAINER);
     const petrolInput = document.getElementById(ID_PETROL_INPUT);
