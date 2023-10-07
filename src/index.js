@@ -1,5 +1,11 @@
 import "./index.scss";
 
+const ID_CONTAINER = "container";
+const ID_PETROL_INPUT = "petrol-input";
+const ID_CAR_BUTTON = "car-button";
+const ID_MOTO_BUTTON = "moto-button";
+const ID_SMILE_OUTPUT_IM = "smile-output-im";
+
 const CAR_TRANSPORT = "car";
 const MOTO_TRANSPORT = "moto";
 
@@ -42,11 +48,10 @@ class Store {
     }
 }
 
-
-const petrolInput = document.getElementById("petrol-input");
-const carButton = document.getElementById("car-button");
-const motoButton = document.getElementById("moto-button");
-const smileOutput = document.getElementById("smile-output");
+const container = document.getElementById(ID_CONTAINER);
+const petrolInput = document.getElementById(ID_PETROL_INPUT);
+const carButton = document.getElementById(ID_CAR_BUTTON);
+const motoButton = document.getElementById(ID_MOTO_BUTTON);
 
 const store = new Store({
     petrol: Number(petrolInput.value)
@@ -74,6 +79,17 @@ store.subscribe(({petrol, transport}) => {
             required: consumption * pathLength / 100,
             isEnough
         });
-        smileOutput.innerText = isEnough ? ":)" : ":(";
+
+        const smileSrc = isEnough ? "./sm_1.png" : "./sm_2.png";
+
+        let smileOutputIm = document.getElementById(ID_SMILE_OUTPUT_IM);
+        if (smileOutputIm) {
+            smileOutputIm.src = smileSrc;
+        } else {
+            smileOutputIm = document.createElement("img");
+            smileOutputIm.id = ID_SMILE_OUTPUT_IM;
+            smileOutputIm.src = smileSrc;
+            container.appendChild(smileOutputIm);
+        }
     }
 });
