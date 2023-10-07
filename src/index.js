@@ -75,11 +75,6 @@ window.addEventListener("load", () => {
             const consumption = transport === CAR_TRANSPORT ? 10 : 5;
 
             const isEnough = petrol >= consumption * pathLength / 100;
-            console.log({
-                petrol,
-                required: consumption * pathLength / 100,
-                isEnough
-            });
 
             const smileSrc = isEnough ? "./sm_1.png" : "./sm_2.png";
 
