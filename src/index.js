@@ -12,6 +12,7 @@ import sendIcon from "@assets/send.svg";
 import instagramIcon from "@assets/instagram.svg";
 import facebookIcon from "@assets/facebook.svg";
 import vkIcon from "@assets/vk.svg";
+import menuIcon from "@assets/menu.svg";
 
 import { insertAllByClass } from "@utils/html";
 
@@ -26,3 +27,4 @@ insertAllByClass("js-send", sendIcon);
 insertAllByClass("js-instagram", instagramIcon);
 insertAllByClass("js-facebook", facebookIcon);
 insertAllByClass("js-vk", vkIcon);
+insertAllByClass("js-menu", menuIcon);
