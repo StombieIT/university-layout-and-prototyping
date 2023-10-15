@@ -2,7 +2,10 @@
 $navbar-height: 90px;
 $gap-x: 5px;
 $gap-2x: $gap-x * 2;
+$gap-3x: $gap-x * 3;
 $gap-4x: $gap-2x * 2;
+$gap-5x: $gap-x * 5;
+$gap-6x: $gap-x * 6;
 $br: 50px;
 
 // Time
@@ -10,6 +13,7 @@ $time-x: .15s;
 $time-2x: $time-x * 2;
 
 // Colors
+$c-black: #101010;
 $c-default: #b0b0b0;
 $c-on-surface: #8a8a8a;
 $c-surface: #f6f6f6;

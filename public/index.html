@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html>
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="../src/index.scss">
+    </head>
     <body>
         <nav class="navbar">
             <h3 class="navbar-header">ANIMEGO</h3>
@@ -57,108 +59,135 @@
                     </div>
                 </div>
                 <div class="anime-tags">
-                    <div class="anime-tag">Action</div>
-                    <div class="anime-tag">Demons</div>
-                    <div class="anime-tag">Historical</div>
-                    <div class="anime-tag">Shounen</div>
+                    <span class="stub">Action</span>
+                    <span class="stub">Demons</span>
+                    <span class="stub">Historical</span>
+                    <span class="stub">Shounen</span>
                 </div>
-                <div class="anime-description">
+                <p class="anime-description">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ab eos et fuga in labore molestiae molestias nulla officia qui repellendus, rerum vel, veniam voluptate!
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ab eos et fuga in labore molestiae molestias nulla officia qui repellendus, rerum vel, veniam voluptate!
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ab eos et fuga in labore molestiae molestias nulla officia qui repellendus, rerum vel, veniam voluptate!
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ab eos et fuga in labore molestiae molestias nulla officia qui repellendus, rerum vel, veniam voluptate!
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ab eos et fuga in labore molestiae molestias nulla officia qui repellendus, rerum vel, veniam voluptate!
+                </p>
+                <div class="anime-controls">
+                    <button type="button" class="btn __clear __stub">
+                        View details
+                        <span class="ic js-more"></span>
+                    </button>
+                    <button type="button" class="btn __clear __stub">
+                        Add to collection
+                        <span class="ic js-add"></span>
+                    </button>
                 </div>
             </div>
             <div class="video-part">
                 <div class="container">
-                    <div class="video-part_left-column">
-                        <div class="seasons">
-                            <button type="button" class="btn __clear" disabled>Season 1</button>
-                            <button type="button" class="btn __clear __light">Season 2</button>
-                            <button type="button" class="btn __clear __light">Season 3</button>
-                            <button type="button" class="btn __clear __light">Season 4</button>
-                            <button type="button" class="btn __clear __light">Season 5</button>
-                            <button type="button" class="btn __clear __light">Season 6</button>
-                        </div>
-                        <div class="video-overlay">
-                            <h2 class="header __video">Season 1: Episode 1</h2>
-                            <img class="video-cover" src="#" alt="">
-                            <video class="video-instance" src="#"></video>
-                            <div class="video-controls">
-                                <div class="episodes">
-                                    <button type="button" class="btn __clear" disabled>Episode 1</button>
+                    <div class="video-part-columns">
+                        <div class="video-part_left-column">
+                            <div class="seasons">
+                                <button type="button" class="btn __clear __light" disabled>Season 1</button>
+                                <button type="button" class="btn __clear __light">Season 2</button>
+                                <button type="button" class="btn __clear __light">Season 3</button>
+                                <button type="button" class="btn __clear __light">Season 4</button>
+                                <button type="button" class="btn __clear __light">Season 5</button>
+                                <button type="button" class="btn __clear __light">Season 6</button>
+                            </div>
+                            <div class="video-overlay">
+                                <h2 class="header __video">Season 1: Episode 1</h2>
+                                <img class="video-cover" src="./video-cover.jpeg" alt="">
+                                <video class="video-instance" loop muted autoplay src="./video.mp4"></video>
+                                <button type="button" class="btn __clear __layer">
+                                    <span class="btn __clear __round __play js-play"></span>
+                                </button>
+                                <div class="video-controls">
+                                    <button type="button" class="btn __clear __transparent" disabled>Episode 1</button>
                                     <button type="button" class="btn __clear __transparent">Episode 2</button>
                                     <button type="button" class="btn __clear __transparent">Episode 3</button>
                                     <button type="button" class="btn __clear __transparent">Episode 4</button>
                                     <button type="button" class="btn __clear __transparent">Episode 5</button>
                                     <button type="button" class="btn __clear __transparent">Episode 6</button>
                                 </div>
-                                <button type="button" class="btn __clear __transparent __arrow-left" />
-                                <button type="button" class="btn __clear __transparent __arrow-right" />
                             </div>
+                            <section class="invitations">
+                                <h6 class="invitation-header">Invite friends</h6>
+                                <button type="button" class="btn __clear __round __invite-friend js-add" />
+                                <button type="button" class="btn __clear __round __invite-friend js-add" />
+                                <button type="button" class="btn __clear __round __invite-friend js-add" />
+                                <button type="button" class="btn __clear __round __invite-friend js-add" />
+                                <button type="button" class="btn __clear __round __invite-friend js-add" />
+                            </section>
                         </div>
-                        <section class="invitations">
-                            <h6 class="invitation-header">Invite friends</h6>
-                            <button type="button" class="btn __clear __dashed __add" />
-                            <button type="button" class="btn __clear __dashed __add" />
-                            <button type="button" class="__clear __dashed __add" />
-                            <button type="button" class="btn __clear __dashed __add" />
-                            <button type="button" class="btn __clear __dashed __add" />
+                        <section class="video-part_right-column">
+                            <div class="video-comments-meta">
+                                <h3 class="header">Comments</h3>
+                                <div class="comments-count-info">3,702 comments</div>
+                            </div>
+                            <div class="video-part_island __comment-field">
+                                <textarea class="field __clear" placeholder="Leave a comment"></textarea>
+                                <button type="button" class="btn __clear __send js-send" />
+                            </div>
+                            <div class="video-part_island __comment">
+                                <div class="avatar-wrapper">
+                                    <img class="img-adaptive" src="./avatar.jpg" alt="" />
+                                </div>
+                                <div class="comment-payload">
+                                    <header class="comment-header">
+                                        <h6 class="nickname">Ficko</h6>
+                                        <span class="date-plural">12d</span>
+                                    </header>
+                                    <div class="comment-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, dignissimos voluptates. Id itaque soluta veritatis!</div>
+                                </div>
+                            </div>
+                            <div class="video-part_island __comment">
+                                <div class="avatar-wrapper">
+                                    <img class="img-adaptive" src="./avatar.jpg" alt="" />
+                                </div>
+                                <div class="comment-payload">
+                                    <header class="comment-header">
+                                        <h6 class="nickname">Ficko</h6>
+                                        <span class="date-plural">12d</span>
+                                    </header>
+                                    <div class="comment-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, dignissimos voluptates. Id itaque soluta veritatis!</div>
+                                </div>
+                            </div>
+                            <div class="video-part_island __comment">
+                                <div class="avatar-wrapper">
+                                    <img class="img-adaptive" src="./avatar.jpg" alt="" />
+                                </div>
+                                <div class="comment-payload">
+                                    <header class="comment-header">
+                                        <h6 class="nickname">Ficko</h6>
+                                        <span class="date-plural">12d</span>
+                                    </header>
+                                    <div class="comment-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, dignissimos voluptates. Id itaque soluta veritatis!</div>
+                                </div>
+                            </div>
+                            <div class="video-part_island __comment">
+                                <div class="avatar-wrapper">
+                                    <img class="img-adaptive" src="./avatar.jpg" alt="" />
+                                </div>
+                                <div class="comment-payload">
+                                    <header class="comment-header">
+                                        <h6 class="nickname">Ficko</h6>
+                                        <span class="date-plural">12d</span>
+                                    </header>
+                                    <div class="comment-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid amet ex facere harum mollitia non, qui quibusdam ratione repellendus sit? Ab alias amet architecto aspernatur atque autem blanditiis debitis deserunt distinctio doloremque ea eius eligendi enim, error est ex explicabo fuga illo impedit in inventore ipsa iusto laboriosam maiores maxime nam nihil non officia possimus praesentium quam quisquam repellendus sit soluta suscipit temporibus voluptatem. Adipisci aliquid, aperiam commodi consectetur consequatur corporis cumque distinctio ex harum inventore ipsa laboriosam molestiae nesciunt nisi nulla pariatur perspiciatis quas quisquam quos reiciendis, rem suscipit tempora temporibus? Ab asperiores deleniti ea eius enim est eum explicabo, id impedit iusto laudantium modi molestiae molestias nihil nostrum nulla quis quisquam quod recusandae, sit soluta tempora veniam, veritatis voluptate voluptatem? Atque commodi, ea eveniet ipsam labore libero optio quaerat quasi veniam voluptas. Accusamus alias, amet blanditiis dolore eligendi itaque laboriosam laborum numquam officia porro praesentium quibusdam repellat reprehenderit repudiandae saepe veritatis voluptatem! Accusamus atque aut blanditiis commodi deleniti ducimus eius esse eveniet excepturi ipsa itaque, maxime nihil officiis omnis praesentium provident quasi quod recusandae sapiente sed, suscipit veniam voluptatem! Aspernatur consequuntur debitis dolorum excepturi, exercitationem fuga id, laudantium magni nesciunt nobis obcaecati possimus quae quidem rerum suscipit totam?</div>
+                                </div>
+                            </div>
                         </section>
                     </div>
-                    <section class="video-part_right-column">
-                        <div class="video-comments-meta">
-                            <h3 class="header">Comments</h3>
-                            <div class="comments-count-info"></div>
-                        </div>
-                        <div class="comment-field">
-                            <textarea class="comment-field" placeholder="Leave a comment"></textarea>
-                            <button type="btn __clear __send" />
-                        </div>
-                        <div class="comment">
-                            <div class="avatar-wrapper">
-                                <img class="avatar" src="#" alt="" />
-                            </div>
-                            <header class="comment-header">
-                                <h6 class="nickname"></h6>
-                                <span class="date-plural"></span>
-                            </header>
-                            <div class="comment-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam, ratione.</div>
-                        </div>
-                        <div class="comment">
-                            <div class="avatar-wrapper">
-                                <img class="avatar" src="#" alt="" />
-                            </div>
-                            <header class="comment-header">
-                                <h6 class="nickname"></h6>
-                                <span class="date-plural"></span>
-                            </header>
-                            <div class="comment-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, dignissimos voluptates. Id itaque soluta veritatis!</div>
-                        </div>
-                        <div class="comment">
-                            <div class="avatar-wrapper">
-                                <img class="avatar" src="#" alt="" />
-                            </div>
-                            <header class="comment-header">
-                                <h6 class="nickname"></h6>
-                                <span class="date-plural"></span>
-                            </header>
-                            <div class="comment-description">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores autem enim eum labore laborum, minima possimus provident quibusdam rerum voluptate!
-                            </div>
-                        </div>
-                        <div class="comment">
-                            <div class="avatar-wrapper">
-                                <img class="avatar" src="#" alt="" />
-                            </div>
-                            <header class="comment-header">
-                                <h6 class="nickname"></h6>
-                                <span class="date-plural"></span>
-                            </header>
-                            <div class="comment-description">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus, tempora.
-                            </div>
-                        </div>
-                    </section>
                 </div>
             </div>
+            <footer class="footer">
+                <h3 class="feedback-header">Our social media</h3>
+                <div class="social-medias">
+                    <a href="#" class="btn __medium js-instagram"></a>
+                    <a href="#" class="btn __medium js-facebook"></a>
+                    <a href="#" class="btn __medium js-vk"></a>
+                </div>
+            </footer>
         </main>
     </body>
 </html>
