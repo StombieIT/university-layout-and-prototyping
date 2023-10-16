@@ -72,7 +72,7 @@
 
 .letter,
 .banner-text {
-    z-index: 9999;
+    z-index: 999;
 }
 
 .banner:before,
