@@ -6,7 +6,8 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
     mode: "development",
     entry: {
-        index: "./src/index.js"
+        index: "./src/index.js",
+        fish: "./src/fish/index.js"
     },
     output: {
         filename: "[name].[hash:10].js",
@@ -22,14 +23,28 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "public", "index.html"),
-            title: "Layout and prototyping"
+            filename: "index.html",
+            title: "Layout and prototyping",
+            chunks: ["index"]
+        }),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "public", "fish", "index.html"),
+            filename: "fish/index.html",
+            title: "Fish",
+            chunks: ["index", "fish"]
+        }),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "public", "flexbox-brand", "index.html"),
+            filename: "flexbox-brand/index.html",
+            title: "Flexbox Brand",
+            chunks: ["index"]
         }),
         new CopyPlugin({
             patterns: [
                 {
                     from: path.resolve(__dirname, "public"),
                     to: path.resolve(__dirname, "dist"),
-                    filter: resourcePath=> !resourcePath.endsWith("index.html")
+                    filter: resourcePath=> !resourcePath.endsWith(".html")
                 }
             ]
         }),

@@ -7,6 +7,11 @@
   color: #000;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 p {
   margin: 0;
 }
@@ -16,6 +21,7 @@ body {
   margin: 0;
   background-color: #fff;
   padding-top: $navbar-height;
+  min-width: 100vh;
 }
 
 button {
