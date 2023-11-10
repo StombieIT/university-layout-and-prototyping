@@ -7,6 +7,19 @@ const SHUFFLE_QUESTIONS = 'SHUFFLE_QUESTIONS';
 const SET_ANSWER_STATUS = 'SET_ANSWER_STATUS';
 const SHUFFLE_ANSWERS = 'SHUFFLE_QUESTIONS';
 
+const HIDE_ANIMATION_TIME_MILLIS = 500;
+const DISPLAY_DELAY_MILLIS = 3_000;
+
+function handleSequentially(elements, handler, delay) {
+    return new Promise(resolve => {
+        if (!elements.length) {
+            return resolve();
+        }
+        handler(elements[0]);
+        setTimeout(() => handleSequentially(elements.slice(1), handler, delay).then(resolve), delay);
+    });
+}
+
 class Store {
     observers = [];
 
@@ -47,10 +60,31 @@ function createLazySubscriber(selector, observer) {
     };
 }
 
+function createSubscriber(selector, observer) {
+    let selectedValue;
+
+    return state => {
+        const newSelectedValue = selector(state);
+
+        if (newSelectedValue !== selectedValue) {
+            observer(newSelectedValue, selectedValue);
+            selectedValue = newSelectedValue;
+        }
+    };
+}
+
 function selectCurrentQuestion(state) {
     if (state.selectedQuestionIndex !== undefined) {
         return state.questions[state.selectedQuestionIndex];
     }
+}
+
+function selectIsRanOutOfQuestions(state) {
+    return state.questions.every(question => question.answerStatus !== undefined);
+}
+
+function selectIsRanOutOfQuestionsAndQuestionIsNotSelected(state) {
+    return selectIsRanOutOfQuestions(state) && state.selectedQuestionIndex === undefined;
 }
 
 function createQuestion(question, idx) {
@@ -60,7 +94,7 @@ function createQuestion(question, idx) {
     if (question.answerStatus !== undefined) {
         questionNode.classList.add(question.answerStatus ? '__correct' : '__incorrect');
     }
-    questionNode.innerText = question.title;
+    questionNode.innerText = `${idx + 1}. ${question.title}`;
     return questionNode;
 }
 
@@ -78,6 +112,8 @@ function createAnswer(answer, idx, isExtended) {
     return answerNode;
 }
 
+const bannerBlock = document.getElementById('banner');
+const statisticsBlock = document.getElementById('statistics');
 const questionsBlock = document.getElementById('questions');
 const answersBlock = document.getElementById('answers');
 
@@ -88,7 +124,7 @@ const store = new Store((state, action) => {
                 return {
                     ...state,
                     questions: state.questions.map((question, idx) => idx === action.selectedQuestionIndex
-                        ? {...question, answers: question.answers.shuffle()}
+                        ? {...question, answers: question.answers}
                         : question
                     ),
                     selectedQuestionIndex: action.selectedQuestionIndex
@@ -97,7 +133,6 @@ const store = new Store((state, action) => {
 
             return {
                 ...state,
-                questions: state.questions.shuffle(),
                 selectedQuestionIndex: undefined
             };
 
@@ -138,7 +173,7 @@ const store = new Store((state, action) => {
                         id: 3,
                         title: '40'
                     }
-                ]
+                ].shuffle()
             },
             {
                 title: 'щвцДВЦД?',
@@ -156,9 +191,9 @@ const store = new Store((state, action) => {
                         title: 'АУУУУУУ',
                         description: 'da'
                     }
-                ]
+                ].shuffle()
             }
-        ]
+        ].shuffle()
     }
 });
 
@@ -166,20 +201,47 @@ questionsBlock.addEventListener('click', evt => {
     const question = evt.target.closest('.question');
 
     if (question && store.state.selectedQuestionIndex === undefined) {
-        store.dispatch({
-            type: SET_SELECTED_QUESTION_INDEX,
-            selectedQuestionIndex: Number(question.dataset.idx)
-        })
+        const questionIndex = Number(question.dataset.idx);
+        const isRanOutOfQuestions = selectIsRanOutOfQuestions(store.state);
+        if (isRanOutOfQuestions || store.state.questions[questionIndex].answerStatus === undefined) {
+            store.dispatch({
+                type: SET_SELECTED_QUESTION_INDEX,
+                selectedQuestionIndex: questionIndex
+            });
+            if (isRanOutOfQuestions) {
+                setTimeout(() => store.dispatch({type: SET_SELECTED_QUESTION_INDEX}), DISPLAY_DELAY_MILLIS);
+            }
+        }
     }
 });
 
+let isAnswering = false;
+
 answersBlock.addEventListener('click', evt => {
-    const answer = evt.target.closest('.answer');
-    if (answer) {
-        const question = store.state.questions[store.state.selectedQuestionIndex];
-        const answer = question.answers[Number(evt.target.dataset.idx)];
-        store.dispatch({ type: SET_ANSWER_STATUS, answerStatus: answer.description !== undefined });
-        setTimeout(() => store.dispatch({ type: SET_SELECTED_QUESTION_INDEX }), 3_000);
+    if (!isAnswering && selectCurrentQuestion(store.state).answerStatus === undefined) {
+        const answer = evt.target.closest('.answer');
+        if (answer) {
+            isAnswering = true;
+            const answerIdx = Number(answer.dataset.idx);
+            const question = store.state.questions[store.state.selectedQuestionIndex];
+            const answerModel = question.answers[answerIdx];
+            const isAnswerCorrect = answerModel.description !== undefined;
+
+            let answersToHide = Array.from(answersBlock.childNodes);
+            if (isAnswerCorrect) {
+                answer.classList.add('__correct');
+                answersToHide = answersToHide.filter(answerNode => Number(answerNode.dataset.idx) !== answerIdx);
+            }
+            store.dispatch({ type: SET_ANSWER_STATUS, answerStatus: isAnswerCorrect });
+            handleSequentially(
+                answersToHide,
+                answer => answer.description !== undefined ? answer.classList.add('__correct') : answer.classList.add('__hidden'),
+                HIDE_ANIMATION_TIME_MILLIS
+            ).then(() => setTimeout(() => {
+                    store.dispatch({ type: SET_SELECTED_QUESTION_INDEX })
+                    isAnswering = false;
+                }, DISPLAY_DELAY_MILLIS));
+        }
     }
 });
 
@@ -188,6 +250,7 @@ store.subscribe(createLazySubscriber(state => state, state => {
 
     if (state.selectedQuestionIndex !== undefined) {
         const question = state.questions[state.selectedQuestionIndex];
+
         if (question) {
             questionsBlock.appendChild(createQuestion(question, state.selectedQuestionIndex));
         }
@@ -197,14 +260,43 @@ store.subscribe(createLazySubscriber(state => state, state => {
     }
 }));
 
-store.subscribe(createLazySubscriber(selectCurrentQuestion, currentQuestion => {
-    Array.from(answersBlock.childNodes).forEach(childNone => childNone.remove());
+store.subscribe(createSubscriber(selectCurrentQuestion, (currentQuestion, oldCurrentQuestion) => {
+    const answersNodes = Array.from(answersBlock.childNodes);
 
-    if (currentQuestion) {
+    if (currentQuestion && oldCurrentQuestion &&
+        currentQuestion.answers == oldCurrentQuestion.answers &&
+        currentQuestion.answerStatus !== oldCurrentQuestion.answerStatus) {
         currentQuestion.answers
-            .forEach((answer, idx) => answersBlock.appendChild(createAnswer(answer, idx, currentQuestion.answerStatus)));
+            .forEach((answer, idx) => {
+                if (answer.description && currentQuestion.answerStatus) {
+                    const answerNode = answersNodes[idx];
+                    const descriptionNode = document.createElement('div');
+                    descriptionNode.classList.add('description');
+                    descriptionNode.innerText = answer.description;
+                    answerNode.appendChild(descriptionNode);
+                }
+            });
+    } else {
+        answersNodes.forEach(childNone => childNone.remove());
+
+        if (currentQuestion) {
+            let answers = currentQuestion.answers;
+            if (selectIsRanOutOfQuestions(store.state)) {
+                answers = answers.filter(answer => answer.description !== undefined);
+            }
+            answers
+                .forEach((answer, idx) => answersBlock.appendChild(createAnswer(answer, idx, currentQuestion.answerStatus !== undefined)));
+        }
     }
 }));
 
-
-store.subscribe(console.log);
+store.subscribe(createLazySubscriber(selectIsRanOutOfQuestionsAndQuestionIsNotSelected, isRanOutOfQuestions => {
+    const bannerBlock = document.getElementById('banner');
+    const statisticsBlock = document.getElementById('statistics');
+    if (isRanOutOfQuestions) {
+        bannerBlock.innerText = 'Вопросы закончились';
+        bannerBlock.classList.add('__visible');
+        statisticsBlock.innerText = `Количество правильных ответов - ${store.state.questions.map(question => question.answerStatus).filter(Boolean).length}`;
+        statisticsBlock.classList.add('__visible');
+    }
+}));

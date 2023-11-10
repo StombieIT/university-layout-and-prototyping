@@ -15,10 +15,23 @@ body {
     height: 100%;
 }
 
-.header {
+.header,
+#banner,
+#statistics {
     background-color: #fff;
     padding: 20px;
     border-radius: 20px;
+}
+
+#banner,
+#statistics {
+    margin-top: 10px;
+    display: none;
+}
+
+#banner.__visible,
+#statistics.__visible {
+    display: block;
 }
 
 #questions,
@@ -31,6 +44,11 @@ body {
     flex-direction: column;
 }
 
+.question {
+    display: flex;
+    align-items: center;
+}
+
 .question,
 .answer {
     background-color: #fff;
@@ -40,16 +58,40 @@ body {
     cursor: pointer;
 }
 
+.answer {
+    transition: opacity .3s, transform .3s;
+}
+
+.answer.__correct {
+    transform: scale(1.03);
+}
+
+.answer.__hidden {
+    transform: translateY(100%);
+    opacity: 0;
+}
+
 .description {
     margin-top: 5px;
     border-top: 2px solid #ececec;
     padding: 10px;
 }
 
-.question.__correct {
-    background-color: green;
+.question.__correct::after,
+.question.__incorrect::after {
+    display: inline-block;
+    content: '';
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
 }
 
-.question.__incorrect {
-    background-color: red;
+.question.__correct::after {
+    background: url(./correct.svg) no-repeat center center;
+    background-size: cover;
+}
+
+.question.__incorrect::after {
+    background: url(./incorrect.svg) no-repeat center center;
+    background-size: cover;
 }
