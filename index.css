@@ -2,10 +2,11 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    font-family: Arial;
 }
 
 body {
-    background-color: #ececec;
+    background: linear-gradient(#e66465, #9198e5);;
 }
 
 .container {
@@ -51,7 +52,7 @@ body {
 
 .question,
 .answer {
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 10px 20px;
     border-radius: 15px;
     margin: 5px;
@@ -73,7 +74,7 @@ body {
 
 .description {
     margin-top: 5px;
-    border-top: 2px solid #ececec;
+    border-top: 2px solid #d3d3d3;
     padding: 10px;
 }
 
