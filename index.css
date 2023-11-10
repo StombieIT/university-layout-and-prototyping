@@ -79,6 +79,7 @@ body {
 
 .question.__correct::after,
 .question.__incorrect::after {
+    flex-shrink: 0;
     display: inline-block;
     content: '';
     width: 25px;

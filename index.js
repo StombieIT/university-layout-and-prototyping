@@ -2,13 +2,79 @@ Array.prototype.shuffle = function () {
     return this.sort(() => Math.random() > 0.5 ? 1 : -1);
 }
 
+const SHUFFLE = 'SHUFFLE';
 const SET_SELECTED_QUESTION_INDEX = 'SET_SELECTED_QUESTION_INDEX';
-const SHUFFLE_QUESTIONS = 'SHUFFLE_QUESTIONS';
 const SET_ANSWER_STATUS = 'SET_ANSWER_STATUS';
-const SHUFFLE_ANSWERS = 'SHUFFLE_QUESTIONS';
 
 const HIDE_ANIMATION_TIME_MILLIS = 500;
 const DISPLAY_DELAY_MILLIS = 3_000;
+
+const INITIAL_STATE = {
+    questions: [
+        {
+            title: 'А голос у него был не такой, как у почтальона Печкина, дохленький. У Гаврюши голосище был, как у электрички. Он _____ _____ на ноги поднимал.',
+            answers: [
+                {
+                    title: 'Пол деревни, за раз',
+                },
+                {
+                    title: 'Полдеревни, зараз',
+                    description: 'Правильно! Раздельно существительное будет писаться в случае наличия дополнительного слова между существительным и частицей. Правильный ответ: полдеревни пишется слитно. Зараз (ударение на второй слог) — это обстоятельственное наречие, пишется слитно. Означает быстро, одним махом.'
+                },
+                {
+                    title: 'Пол-деревни, за раз'
+                }
+            ]
+        },
+        {
+            title: 'А эти слова как пишутся?',
+            answers: [
+                {
+                    title: 'Капуччино и эспрессо'
+                },
+                {
+                    title: 'Каппуччино и экспресо',
+                },
+                {
+                    title: 'Капучино и эспрессо',
+                    description: 'Конечно! По орфографическим нормам русского языка единственно верным написанием будут «капучино» и «эспрессо».'
+                }
+            ]
+        },
+        {
+            title: 'Как нужно писать?',
+            answers: [
+                {
+                    title: 'Черезчур'
+                },
+                {
+                    title: 'Черес-чур',
+                },
+                {
+                    title: 'Чересчур',
+                    description: 'Да! Это слово появилось от соединения предлога «через» и древнего слова «чур», которое означает «граница», «край». Но слово претерпело изменения, так что правильное написание учим наизусть — «чересчур».'
+                }
+            ]
+        },
+        {
+            title: 'Где допущена ошибка?',
+            answers: [
+                {
+                    title: 'Аккордеон'
+                },
+                {
+                    title: 'Белиберда',
+                },
+                {
+                },
+                {
+                    title: 'Эпелепсия',
+                    description: 'Верно! Это слово пишется так: «эпИлепсия».'
+                }
+            ]
+        },
+    ]
+};
 
 function handleSequentially(elements, handler, delay) {
     return new Promise(resolve => {
@@ -119,6 +185,13 @@ const answersBlock = document.getElementById('answers');
 
 const store = new Store((state, action) => {
     switch (action.type) {
+        case SHUFFLE:
+            return {
+                ...state,
+                questions: state.questions
+                    .map(question => ({...question, answers: question.answers.shuffle()}))
+                    .shuffle()
+            }
         case SET_SELECTED_QUESTION_INDEX:
             if (action.selectedQuestionIndex !== undefined) {
                 return {
@@ -144,58 +217,12 @@ const store = new Store((state, action) => {
                         ? {...question, answerStatus: action.answerStatus}
                         : question)
             };
-        case SHUFFLE_ANSWERS:
-            return {
-                ...state,
-                questions: state.questions.map((question, idx) => idx === action.questionIndex)
-            };
     }
 
-    return {
-        questions: [
-            {
-                title: 'Сколько лет?',
-                answers: [
-                    {
-                        id: 0,
-                        title: '10',
-                    },
-                    {
-                        id: 1,
-                        title: '20',
-                        description: 'Да,'
-                    },
-                    {
-                        id: 2,
-                        title: '30'
-                    },
-                    {
-                        id: 3,
-                        title: '40'
-                    }
-                ].shuffle()
-            },
-            {
-                title: 'щвцДВЦД?',
-                answers: [
-                    {
-                        title: '123'
-                    },
-                    {
-                        title: '56',
-                    },
-                    {
-                        title: '228'
-                    },
-                    {
-                        title: 'АУУУУУУ',
-                        description: 'da'
-                    }
-                ].shuffle()
-            }
-        ].shuffle()
-    }
+    return INITIAL_STATE;
 });
+
+store.dispatch({ type: SHUFFLE });
 
 questionsBlock.addEventListener('click', evt => {
     const question = evt.target.closest('.question');
