@@ -109,8 +109,6 @@ store.subscribe(UPDATE_SELECTED_WORDS, () => {
         .map(selectedWordKey => store.wordsMap.get(selectedWordKey)).join(' ');
 });
 
-store.words = ['лес', 'бочка', '20', 'бык', 'крик', '3'];
-
 wordsList.addEventListener('mousedown', evt => {
     const target = evt.target;
     if (target.classList.contains('word')) {
