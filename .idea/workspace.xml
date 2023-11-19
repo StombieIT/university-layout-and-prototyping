@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="04a2f2ae-501d-4071-ab1a-44ecd2243f2c" name="Changes" comment="Фиксы" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Wn8rCKeujbEICfwGdnZn6OKOaT" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/vladislav.yartsev/dev/personal/university-layout-and-prototyping",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/public/fish" />
+      <recent name="$PROJECT_DIR$/public" />
+      <recent name="$PROJECT_DIR$/src/fish" />
+      <recent name="$PROJECT_DIR$/src/assets" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/flexbox-brand" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="04a2f2ae-501d-4071-ab1a-44ecd2243f2c" name="Changes" comment="" />
+      <created>1697357182013</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1697357182013</updated>
+      <workItem from="1697357183376" duration="15778000" />
+      <workItem from="1697475631148" duration="3238000" />
+      <workItem from="1697485160281" duration="3150000" />
+      <workItem from="1697488984624" duration="1107000" />
+      <workItem from="1697564778182" duration="18000" />
+      <workItem from="1697613069901" duration="61000" />
+      <workItem from="1697879174713" duration="1434000" />
+      <workItem from="1699038643577" duration="10841000" />
+      <workItem from="1699220767785" duration="2195000" />
+      <workItem from="1699424935343" duration="53000" />
+      <workItem from="1699479820964" duration="1961000" />
+      <workItem from="1699523842691" duration="3000" />
+      <workItem from="1699559138071" duration="13176000" />
+      <workItem from="1699635101695" duration="8856000" />
+      <workItem from="1699707686513" duration="598000" />
+      <workItem from="1699720026803" duration="124000" />
+      <workItem from="1700387660046" duration="8865000" />
+    </task>
+    <task id="LOCAL-00001" summary="Сделал вёрстку">
+      <created>1697370070165</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1697370070165</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Добавил адаптивность">
+      <created>1697387468445</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1697387468445</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Добавил логотип сайта">
+      <created>1697482105958</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1697482105958</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Добавил остальные дз">
+      <created>1697489231958</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1697489231958</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Исправил загрузку стилей">
+      <created>1697489508212</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1697489508212</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Поменял пути к аватарке">
+      <created>1697490007565</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1697490007565</updated>
+    </task>
+    <task id="LOCAL-00007" summary="init">
+      <created>1699565640341</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1699565640341</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Фиксы">
+      <created>1699643334984</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1699643334984</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Сделал вёрстку" />
+    <MESSAGE value="Добавил адаптивность" />
+    <MESSAGE value="Добавил логотип сайта" />
+    <MESSAGE value="Добавил остальные дз" />
+    <MESSAGE value="Исправил загрузку стилей" />
+    <MESSAGE value="Поменял пути к аватарке" />
+    <MESSAGE value="init" />
+    <MESSAGE value="Фиксы" />
+    <option name="LAST_COMMIT_MESSAGE" value="Фиксы" />
+  </component>
+</project>
