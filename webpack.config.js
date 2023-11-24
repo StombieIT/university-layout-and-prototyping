@@ -40,6 +40,12 @@ module.exports = {
             title: "Flexbox Brand",
             chunks: ["index"]
         }),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "public", "words", "index.html"),
+            filename: "words/index.html",
+            title: "Слова",
+            chunks: ["index"]
+        }),
         new CopyPlugin({
             patterns: [
                 {
