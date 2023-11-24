@@ -1,0 +1,113 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(#e66465, #9198e5);
+}
+
+.container {
+    margin: 0 auto;
+    padding: 80px 0;
+    max-width: 900px;
+    display: grid;
+    grid-template-areas: "l l"
+                         "s c";
+}
+
+.island {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    margin: 5px;
+    border-radius: 20px;
+    height: 100%;
+}
+
+#words-list {
+    display: flex;
+    align-items: center;
+    grid-area: l;
+    height: 100px;
+    user-select: none;
+}
+
+.word {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 10px;
+    cursor: grab;
+}
+
+.word + .word {
+    margin-left: 20px;
+}
+
+.word.__moving {
+    cursor: grabbing;
+}
+
+.word.__shifted {
+    position: absolute;
+    margin-left: 0;
+    transform: translate(-50%, -50%);
+}
+
+#words-sandbox {
+    grid-area: s;
+    border: 3px dashed #fff;
+    transition: background-color 0.3s;
+    display: flex;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+#words-sandbox.__active {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+#words-sandbox.__attractive {
+    animation: 0.5s flashing infinite;
+}
+
+.content {
+    grid-area: c;
+    min-height: 400px;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+}
+
+#words-input {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+#disassemble-button,
+#words-input {
+    border: none;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px 20px;
+}
+
+#output {
+    background-color: rgba(255, 255, 255, 0.7);
+    margin-top: 50px;
+    padding: 20px 15px;
+    border-top: 3px dashed #fff;
+    border-bottom: 3px dashed #fff;
+    border-left: 5px solid #fff;
+    border-right: 5px solid #fff;
+}
+
+@keyframes flashing {
+    50% {
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+}

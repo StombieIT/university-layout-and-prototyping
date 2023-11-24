@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./index.css">
+        <script defer src="index.js"></script>
+    </head>
+    <body>
+        <nav class="navbar">
+            <h3 class="navbar-header">
+                ANIMEGO
+            </h3>
+            <ul class="navbar-links">
+                <li class="navbar-link">
+                    <a href="../index.html">
+                        Anime
+                    </a>
+                </li>
+                <li class="navbar-link">
+                    <a href="../fish/index.html">
+                        Fish
+                    </a>
+                </li>
+                <li class="navbar-link">
+                    <a href="../flexbox-brand/index.html">
+                        Flexbox Brand
+                    </a>
+                </li>
+                <li class="navbar-link __active">
+                    <a href="./index.html">
+                        Слова
+                    </a>
+                </li>
+            </ul>
+            <div class="navbar-controls">
+                <input class="navbar-search-field" placeholder="Search anime" />
+                <button type="button" class="btn __clear __primary __round __medium __ic js-notifications" />
+                <button type="button" class="btn __clear __round __medium">
+                    <img class="img-adaptive" src="../avatar.jpg" alt="avatar">
+                </button>
+                <button type="button" class="btn __clear __quit" />
+                <button id="navbar-menu-btn" type="button" class="btn __clear __primary __round __medium __ic js-menu" />
+            </div>
+        </nav>
+
+        <div class="container">
+            <header class="island" id="words-list">
+                <span class="word">a1 ficko</span>
+                <span class="word">a3 awdawd</span>
+                <span class="word">a2 awdawd</span>
+                <span class="word">a3 20</span>
+            </header>
+            <aside class="island" id="words-sandbox">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" =viewBox="0 0 50 50" width="50px" height="50px">
+                    <path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z"/>
+                </svg>
+            </aside>
+            <main class="island content">
+                <div class="controls">
+                    <input type="text" id="words-input" placeholder="лес - бочка - 20 - бык - крик - 3">
+                    <button type="button" id="disassemble-button">Разобрать</button>
+                </div>
+                <div id="output"></div>
+            </main>
+        </div>
+
+        <footer class="footer">
+            <div>
+                <h3 class="feedback-header">Our social media</h3>
+                <div class="social-medias">
+                    <a href="#" class="btn __medium js-instagram"></a>
+                    <a href="#" class="btn __medium js-facebook"></a>
+                    <a href="#" class="btn __medium js-vk"></a>
+                </div>
+            </div>
+            <div class="watermark">
+                <div class="logo"></div>
+                <h3 class="watermark-header">ANIMEGO</h3>
+            </div>
+        </footer>
+    </body>
+</html>
