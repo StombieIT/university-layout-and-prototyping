@@ -56,11 +56,9 @@ store.subscribe(StoreEvent.APPLICATION_STATE_CHANGE, () => {
         currentMenu = createMenu();
         document.getElementById(CONTAINER_ID)
             .appendChild(currentMenu.element);
-    } else {
-        if (currentMenu) {
-            currentMenu.dispose();
-            currentMenu.element.remove();
-            currentMenu = undefined;
-        }
+    } else if (currentMenu) {
+        currentMenu.dispose();
+        currentMenu.element.remove();
+        currentMenu = undefined;
     }
 });

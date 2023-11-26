@@ -15,7 +15,7 @@ module.exports = {
         path: path.resolve(__dirname, "dist")
     },
     resolve: {
-        extensions: [".js"],
+        extensions: [".js", ".json"],
         alias: {
             "@": path.resolve(__dirname, "src")
         }

@@ -1,13 +1,40 @@
-import './menu.scss';
 import {store, StoreEvent} from '@/store';
 import {ApplicationStage, CONTAINER_ID} from '@/constants';
-import {convertToNode} from "@/utils/html";
-import menu from "@/templates/menu.html";
+import {convertToNode} from '@/utils/html';
+import firstLevel from '@/templates/first-level.html'
+import {createUserMovementListener} from "@/game/listeners";
+import config from '@/config';
 
-function createMenu() {
-    const element = convertToNode(menu);
+let field;
+let user;
+let barrier;
+
+function createFirstLevel() {
+    const element = convertToNode(firstLevel);
+
+    field = element;
+
+    user = element.querySelector('#user');
+    const userImg = user.querySelector('img');
+
+    userImg.src = 'steve.webp';
+    userImg.alt = 'user';
+
+    barrier = element.querySelector('.barrier');
+    const blocks = barrier.querySelectorAll('.mine-block');
+
+    blocks
+        .forEach(block => {
+            block.src = './wood.png';
+            block.alt = 'wood';
+        });
+
+    const userMovementListener = createUserMovementListener(config.USER_SPEED, field, user, barrier);
+
+    window.addEventListener('keydown', userMovementListener);
 
     function dispose () {
+        window.removeEventListener('keydown', userMovementListener);
     }
 
     return {
@@ -16,18 +43,16 @@ function createMenu() {
     };
 }
 
-let currentMenu;
+let currentFirstLevel;
 
 store.subscribe(StoreEvent.APPLICATION_STATE_CHANGE, () => {
-    if (store.state.applicationStage === ApplicationStage.MENU) {
-        currentMenu = createMenu();
+    if (store.state.applicationStage === ApplicationStage.FIRST_LEVEL) {
+        currentFirstLevel = createFirstLevel();
         document.getElementById(CONTAINER_ID)
-            .appendChild(currentMenu.element);
-    } else {
-        if (currentMenu) {
-            currentMenu.dispose();
-            currentMenu.element.remove();
-            currentMenu = undefined;
-        }
+            .appendChild(currentFirstLevel.element);
+    } else if (currentFirstLevel) {
+        currentFirstLevel.dispose();
+        currentFirstLevel.element.remove();
+        currentFirstLevel = undefined;
     }
 });

@@ -45,11 +45,9 @@ store.subscribe(StoreEvent.APPLICATION_STATE_CHANGE, () => {
         currentAuthorizationPopup = createAuthorizationPopup();
         document.getElementById(CONTAINER_ID)
             .appendChild(currentAuthorizationPopup.element);
-   } else {
-        if (currentAuthorizationPopup) {
-            currentAuthorizationPopup.dispose();
-            currentAuthorizationPopup.element.remove();
-            currentAuthorizationPopup = undefined;
-        }
+   } else if (currentAuthorizationPopup) {
+        currentAuthorizationPopup.dispose();
+        currentAuthorizationPopup.element.remove();
+        currentAuthorizationPopup = undefined;
    }
 });
