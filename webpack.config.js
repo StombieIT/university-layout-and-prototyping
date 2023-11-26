@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
     mode: "development",
     entry: {
+        index: "./src/index.js",
         game: "./src/game.js"
     },
     output: {
@@ -16,8 +17,7 @@ module.exports = {
     resolve: {
         extensions: [".js"],
         alias: {
-            "@utils": path.resolve(__dirname, "src", "utils"),
-            "@assets": path.resolve(__dirname, "src", "assets")
+            "@": path.resolve(__dirname, "src")
         }
     },
     plugins: [
@@ -66,6 +66,12 @@ module.exports = {
                 test: /\.svg$/,
                 use: [
                     'svg-inline-loader'
+                ]
+            },
+            {
+                test: /\.html$/,
+                use: [
+                    'html-loader'
                 ]
             }
         ]

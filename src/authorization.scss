@@ -1,0 +1,30 @@
+@import "extends";
+
+.authorization-popup {
+  @extend %wrapper;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  width: 300px;
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#login-field {
+  padding: 10px;
+  border-radius: 15px;
+  border: none;
+}
+
+#login-submit {
+  margin-top: 30px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 15px;
+  border: none;
+}

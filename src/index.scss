@@ -8,6 +8,18 @@ body {
   height: 100vh;
 }
 
+ul {
+  list-style: none;
+}
+
+#container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(#e66465, #9198e5);
+}
+
 .background {
   position: absolute;
   left: 50%;

@@ -1,10 +1,10 @@
 import './index.scss';
-import {createInfiniteAbsoluteTicker, createInfiniteTicker} from "./utils/time";
-import {BLOCK_OWNER_CHANGE, store} from "./store/store";
+import {createInfiniteAbsoluteTicker, createInfiniteTicker} from "@/utils/time";
+import {StoreEvent, store} from "@/store";
 import './userBlockOwner';
-import {BlockOwner} from "./models";
-import {ARROW_ID, USER_OWNER_ID} from "./constants";
-import {createTnt} from "./components/tnt";
+import {BlockOwner} from "@/models";
+import {ARROW_ID, USER_OWNER_ID} from "@/constants";
+import {createTnt} from "@/components/tnt";
 
 const user = document.getElementById('user');
 const field = document.getElementById('field');
@@ -155,7 +155,7 @@ window.addEventListener('keydown', evt => {
     }
 });
 
-store.subscribe(BLOCK_OWNER_CHANGE, () => {
+store.subscribe(StoreEvent.BLOCK_OWNER_CHANGE, () => {
     if (store.state.blockOwner) {
         window.addEventListener('mousemove', onMouseMove);
     } else {
