@@ -7,9 +7,6 @@ export const StoreEvent = {
 }
 
 export class Store extends Observer {
-    // or computer
-    state = {};
-
     set blockOwner(value) {
         this.state.blockOwner = value;
         this.notify(StoreEvent.BLOCK_OWNER_CHANGE);

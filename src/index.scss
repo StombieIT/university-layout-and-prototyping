@@ -1,3 +1,5 @@
+@import "constants";
+
 *, *::before, *::after {
   box-sizing: border-box;
   padding: 0;
@@ -17,7 +19,7 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(#e66465, #9198e5);
+  background: $bg;
 }
 
 .background {
@@ -31,10 +33,7 @@ ul {
 
 #field {
   position: relative;
-  //margin: 0 auto;
-  //max-width: 1200px;
   width: 1200px;
-  //padding: 100px 0;
   height: 700px;
   background-color: gray;
   overflow: hidden;
@@ -43,8 +42,11 @@ ul {
 #bonfire {
   position: absolute;
   bottom: 0;
-  left: 800px;
   width: 100px;
+
+  img {
+    width: 100%;
+  }
 }
 
 .steve {
@@ -94,6 +96,29 @@ $arrowWidth: 60px;
   top: 50%;
   transform: translateX($arrowWidth) translateY(-50%);
   transform-origin: -$arrowWidth;
+}
+
+#force-bar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin: 15px;
+  transform: translateX(-50%);
+  border-radius: 15px;
+  border: 2px solid #fff;
+  overflow: hidden;
+  width: 30vw;
+  height: 30px;
+
+  .progress {
+    background: $bg;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+  }
 }
 
 @keyframes tnt-throbbing {

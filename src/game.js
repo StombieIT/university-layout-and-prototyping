@@ -19,7 +19,6 @@ let angle = 0;
 let userPosition = 0;
 
 function onMouseMove(evt) {
-    const clientY = window.innerHeight - evt.clientY;
     const userRect = user.getBoundingClientRect();
 
     const centerCoor = {
@@ -81,56 +80,6 @@ function isBumpedIntoTarget(objectMetrics, targetMetrics) {
     return objectMetrics.y + objectMetrics.height > targetMetrics.y &&
         objectMetrics.x + objectMetrics.width > targetMetrics.x &&
         objectMetrics.x < targetMetrics.x + targetMetrics.width;
-}
-
-function throwTnt(initialPosition, force, angle = Math.PI / 2, targets = []) {
-    const tnt = createTnt({});
-    tnt.style.left = initialPosition.x;
-    tnt.style.top = initialPosition.y;
-    field.appendChild(tnt);
-
-    const tntRect = tnt.getBoundingClientRect();
-    const tntSize = {
-        width: tntRect.width,
-        height: tntRect.height
-    };
-
-    const ticker = createInfiniteAbsoluteTicker(timeSpent => {
-        const timeSpentSeconds = timeSpent / 1000;
-
-        const newCoordinate = {
-            x: timeSpentSeconds * force * Math.cos(angle),
-            y: - timeSpentSeconds * Math.sin(angle) * force + timeSpentSeconds * timeSpentSeconds * 200
-        };
-
-        const newRelativeToFieldMetrics = {
-            ...tntSize,
-            x: initialPosition.x + newCoordinate.x,
-            y: initialPosition.y + newCoordinate.y
-        };
-
-        if (newRelativeToFieldMetrics.x < 0 || newRelativeToFieldMetrics.x > fieldRect.width - tntSize.width ||
-            newRelativeToFieldMetrics.y < 0 || newRelativeToFieldMetrics.y > fieldRect.height - tntSize.height) {
-            ticker.cancel();
-        }
-
-        for (const target of targets) {
-            const targetRect = target.getBoundingClientRect();
-
-            const targetMetrics = {
-                x: targetRect.left - fieldRect.left,
-                y: targetRect.top - fieldRect.top,
-                width: targetRect.width,
-                height: targetRect.height
-            };
-
-            if (isBumpedIntoTarget(newRelativeToFieldMetrics, targetMetrics)) {
-                ticker.cancel();
-            }
-        }
-
-        tnt.style.transform = `translate(${newCoordinate.x}px, ${newCoordinate.y}px)`;
-    });
 }
 
 window.addEventListener('keydown', evt => {

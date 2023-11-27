@@ -1,3 +1,12 @@
 {
-  "USER_SPEED": 0.5
+  "USER_SPEED": 0.5,
+  "FORCE": {
+    "MIN": 0.01,
+    "MAX": 1000,
+    "SPEED": {
+      "SLOW": 1,
+      "MEDIUM": 0.3,
+      "FAST": 0.5
+    }
+  }
 }

@@ -61,8 +61,12 @@ export function createInfiniteTicker(timeSpentHandler) {
 
 export function createInfiniteAbsoluteTicker(timeSpentHandler) {
     let needToCancel = false;
+    let cancelValue;
 
-    const cancel = () => needToCancel = true;
+    const cancel = value => {
+        needToCancel = true;
+        cancelValue = value;
+    };
 
     const promise = new Promise(resolve => {
         const timeGoesFrom = Date.now();
@@ -76,7 +80,7 @@ export function createInfiniteAbsoluteTicker(timeSpentHandler) {
                 timeSpentHandler(timeSpent);
                 requestAnimationFrame(tick)
             } else {
-                resolve();
+                resolve(cancelValue);
             }
         }
 
