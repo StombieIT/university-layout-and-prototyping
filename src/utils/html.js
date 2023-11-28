@@ -23,22 +23,16 @@ function isBumpedIntoTarget(objectMetrics, targetMetrics) {
         objectMetrics.x < targetMetrics.x + targetMetrics.width;
 }
 
-export function throwTnt(field, tnt, force, angle = Math.PI / 2, targets = []) {
+export function throwTnt(field, tnt, tntInitialPosition, force, angle = Math.PI / 2, targets = []) {
     let needToStop = false;
 
     const stop = () => needToStop = true;
 
+    tnt.style.left = tntInitialPosition.x;
+    tnt.style.top = tntInitialPosition.y;
+
     const fieldRect = field.getBoundingClientRect();
     const tntRect = tnt.getBoundingClientRect();
-    console.log(tnt);
-    console.log(field);
-
-    const initialPosition = {
-        x: tntRect.left - fieldRect.left,
-        y: tntRect.top - fieldRect.top
-    };
-
-    console.log(initialPosition);
 
     const tntSize = {
         width: tntRect.width,
@@ -59,8 +53,8 @@ export function throwTnt(field, tnt, force, angle = Math.PI / 2, targets = []) {
 
         const newRelativeToFieldMetrics = {
             ...tntSize,
-            x: initialPosition.x + newCoordinate.x,
-            y: initialPosition.y + newCoordinate.y
+            x: tntInitialPosition.x + newCoordinate.x,
+            y: tntInitialPosition.y + newCoordinate.y
         };
 
         if (newRelativeToFieldMetrics.x < 0 || newRelativeToFieldMetrics.x > fieldRect.width - tntSize.width ||

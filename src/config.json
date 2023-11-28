@@ -8,5 +8,18 @@
       "MEDIUM": 0.3,
       "FAST": 0.5
     }
-  }
+  },
+  "TIME_LEFT": {
+    "FEW": 3600000,
+    "A_LOT": 300000
+  },
+  "ATTEMPTS": {
+    "FEW": 5,
+    "A_LOT": 20
+  },
+  "HITS": {
+    "FEW": 2,
+    "A_LOT": 3
+  },
+  "END_GAME_DELAY": 3000
 }

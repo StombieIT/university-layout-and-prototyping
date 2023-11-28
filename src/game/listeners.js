@@ -21,10 +21,6 @@ export function createUserMovementListener(speed, field, user, barrier) {
                         userPosition + timeSpent * speed * changePositionDirectionRatio
                     )
                 );
-                console.log(Math.min(
-                    barrierRect.left - fieldRect.left - userRect.width,
-                    userPosition + timeSpent * speed * changePositionDirectionRatio
-                ));
                 user.style.transform = `translateX(${userPosition}px)`;
             });
 

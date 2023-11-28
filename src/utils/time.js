@@ -92,3 +92,12 @@ export function createInfiniteAbsoluteTicker(timeSpentHandler) {
         cancel
     };
 }
+
+export function convertToTimeLeftRepresentation(timeMillis) {
+    const timeSeconds = Math.round(timeMillis / 1000);
+
+    const secondsLeftRepresentation = (timeSeconds % 60).toString().padStart(2, '0');
+    const minutesLeftRepresentation = Math.floor(timeSeconds / 60).toString().padStart(2, '0');
+
+    return `${minutesLeftRepresentation}:${secondsLeftRepresentation}`;
+}
