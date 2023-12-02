@@ -33,9 +33,9 @@ let message;
 let endGameScheduler;
 
 function endGameWithMessage(messageText) {
+    gameStore.tntOwner = undefined;
     if (!message) {
         message = convertToNode(messageTemplate);
-        console.log('MSG', message);
         rightPanel.appendChild(message);
     }
 
@@ -77,7 +77,6 @@ function onForceChange() {
         console.log(forceProgress);
         progress.style.transform = `translateX(${forceProgress - 100}%)`;
     } else {
-        console.log('FORCEBAR', forceBar);
         forceBar.remove();
         forceBar = undefined;
         progress = undefined;
@@ -150,10 +149,14 @@ function onBlockOwnerChange() {
         window.removeEventListener('mousemove', userArrowListener);
         userForceListener = undefined;
         userArrowListener = undefined;
-        tnt.remove();
-        arrow.remove();
-        tnt = undefined;
-        arrow = undefined;
+        if (tnt) {
+            tnt.remove();
+            tnt = undefined;
+        }
+        if (arrow) {
+            arrow.remove();
+            arrow = undefined;
+        }
     }
 }
 
@@ -209,9 +212,9 @@ function createFirstLevel() {
     function dispose () {
         window.removeEventListener('mousemove', userArrowListener);
         window.removeEventListener('keydown', userMovementListener);
-        if (gameStore.state.tntOwner) {
-            gameStore.tntOwner = undefined;
-        }
+        // if (gameStore.state.tntOwner) {
+        //     gameStore.tntOwner = undefined;
+        // }
         timeTicker.cancel();
         gameStore.unsubscribe(GameStoreEvent.TIME_LEFT_CHANGE, onTimeLeftChange);
         gameStore.unsubscribe(GameStoreEvent.ATTEMPTS_LEFT_CHANGE, onAttemptsLeftChange);
