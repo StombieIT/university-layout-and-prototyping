@@ -5,7 +5,8 @@ export const GameStoreEvent = {
     FORCE_CHANGE: 'FORCE_CHANGE',
     ATTEMPTS_LEFT_CHANGE: 'ATTEMPTS_LEFT_CHANGE',
     HITS_LEFT_CHANGE: 'HITS_LEFT_CHANGE',
-    TIME_LEFT_CHANGE: 'TIME_LEFT_CHANGE'
+    TIME_LEFT_CHANGE: 'TIME_LEFT_CHANGE',
+    POINTS_CHANGE: 'POINTS_CHANGE'
 };
 
 export const TntOwner = {
@@ -21,6 +22,11 @@ export class GameStore extends Observer {
     set force(value) {
         this.state.force = value;
         this.notify(GameStoreEvent.FORCE_CHANGE);
+    }
+
+    set points(value) {
+        this.state.points = value;
+        this.notify(GameStoreEvent.POINTS_CHANGE);
     }
 
     set attemptsLeft(value) {

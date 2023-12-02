@@ -22,6 +22,16 @@ export class Controller {
             }
         };
     }
+
+    addPoints(pointsToAdd) {
+        this.store.userStats = {
+            ...this.store.state.userStats,
+            stats: {
+                ...this.store.state.userStats.stats,
+                points: this.store.state.userStats.stats.points + pointsToAdd
+            }
+        };
+    }
 }
 
 export const controller = new Controller(store);

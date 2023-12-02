@@ -1,5 +1,5 @@
-import {createTnt} from "@/components/tnt";
 import {createInfiniteAbsoluteTicker} from "@/utils/time";
+import config from "@/config";
 
 const DOM_PARSER_INSTANCE = new DOMParser();
 
@@ -48,7 +48,7 @@ export function throwTnt(field, tnt, tntInitialPosition, force, angle = Math.PI 
 
         const newCoordinate = {
             x: timeSpentSeconds * force * Math.cos(angle),
-            y: - timeSpentSeconds * Math.sin(angle) * force + timeSpentSeconds * timeSpentSeconds * 200
+            y: - timeSpentSeconds * Math.sin(angle) * force + timeSpentSeconds * timeSpentSeconds * config.GRAVITY_ACCELERATION
         };
 
         const newRelativeToFieldMetrics = {
