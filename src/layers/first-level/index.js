@@ -11,6 +11,7 @@ import {createTnt} from "@/components/tnt";
 import {createArrow} from "@/components/arrow";
 import forceBarTemplate from "@/templates/force-bar.html";
 import {convertToTimeLeftRepresentation, createInfiniteTicker} from "@/utils/time";
+import {controller} from "@/store/controller";
 
 let field;
 let fieldRect;
@@ -105,6 +106,7 @@ function onHitsLeftChange() {
     hitsLeft.innerText = gameStore.state.hitsLeft;
 
     if (gameStore.state.hitsLeft === 0) {
+        controller.currentLevel = store.state.userStats.stats.currentLevel + 1;
         endGameWithMessage('Уровень пройден!');
     }
 }

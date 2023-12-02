@@ -23,5 +23,17 @@ export function getOrCreateStats(login) {
     return stats[login];
 }
 
-export function replaceStats(stats) {
+export function replaceStats(login, statsOfUser) {
+    const stringifiedStats = localStorage.getItem(STATS_KEY);
+
+    let stats;
+    if (!stringifiedStats) {
+        stats = {};
+    } else {
+        stats = JSON.parse(stringifiedStats);
+    }
+
+    stats[login] = statsOfUser;
+
+    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
 }

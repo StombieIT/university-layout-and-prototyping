@@ -1,5 +1,5 @@
 import {store} from "./";
-import {getOrCreateStats} from "@/utils/storage";
+import {getOrCreateStats, replaceStats} from "@/utils/storage";
 
 export class Controller {
     constructor(store) {
@@ -9,7 +9,17 @@ export class Controller {
     set login(value) {
         this.store.userStats = {
             login: value,
-            ...getOrCreateStats(value)
+            stats: getOrCreateStats(value)
+        };
+    }
+
+    set currentLevel(value) {
+        this.store.userStats = {
+            ...this.store.state.userStats,
+            stats: {
+                ...this.store.state.userStats.stats,
+                currentLevel: value
+            }
         };
     }
 }

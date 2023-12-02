@@ -8,7 +8,7 @@ function onMenuClick(evt) {
     if (evt.target.classList.contains('level')) {
         const levelNum = Number(evt.target.dataset.levelNum);
 
-        if (levelNum <= store.state.userStats.currentLevel) {
+        if (levelNum <= store.state.userStats.stats.currentLevel) {
             switch (levelNum) {
                 case 0:
                     store.applicationStage = ApplicationStage.FIRST_LEVEL;
@@ -32,7 +32,7 @@ function createMenu() {
     Array.from(levels).forEach(level => {
         const levelNum = Number(level.dataset.levelNum);
 
-        if (levelNum > store.state.userStats.currentLevel) {
+        if (levelNum > store.state.userStats.stats.currentLevel) {
             level.classList.add('__inactive');
         }
     })
