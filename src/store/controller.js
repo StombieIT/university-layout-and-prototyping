@@ -1,5 +1,5 @@
 import {store} from "./";
-import {getOrCreateStats, replaceStats} from "@/utils/storage";
+import {getOrCreateStats} from "@/utils/storage";
 
 export class Controller {
     constructor(store) {
