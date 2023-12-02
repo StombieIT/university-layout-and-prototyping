@@ -1,7 +1,7 @@
 import {store, StoreEvent} from '@/store';
 import {ApplicationStage, CONTAINER_ID} from '@/constants';
 import {convertToNode, throwTnt} from '@/utils/html';
-import firstLevel from '@/templates/first-level.html'
+import thirdLevel from '@/templates/first-level.html'
 import messageTemplate from '@/templates/message.html';
 import {createForceListener, createUserArrowListener, createUserMovementListener} from "@/game/listeners";
 import config from '@/config';
@@ -25,6 +25,7 @@ let rightPanel;
 let timeLeft;
 let attemptsLeft;
 let hitsLeft;
+let points;
 
 const gameStore = new GameStore({
     angle: 0
@@ -75,9 +76,9 @@ function onForceChange() {
             field.appendChild(forceBar);
         }
         const forceProgress = (gameStore.state.force - config.FORCE.MIN) * 100 / (config.FORCE.MAX - config.FORCE.MIN);
-        console.log(forceProgress);
         progress.style.transform = `translateX(${forceProgress - 100}%)`;
     } else {
+        console.log('FB', forceBar);
         forceBar.remove();
         forceBar = undefined;
         progress = undefined;
@@ -105,10 +106,24 @@ function onAttemptsLeftChange() {
 function onHitsLeftChange() {
     hitsLeft.innerText = gameStore.state.hitsLeft;
 
+    const pointsToAdd = Math.round((gameStore.state.attemptsLeft + 1) * gameStore.state.timeLeft / 1000);
+    if (!gameStore.state.points) {
+        gameStore.points = pointsToAdd;
+    } else {
+        gameStore.points = gameStore.state.points + pointsToAdd;
+    }
+
     if (gameStore.state.hitsLeft === 0) {
-        controller.currentLevel = store.state.userStats.stats.currentLevel + 1;
+        if (store.state.userStats.stats.currentLevel === 0) {
+            controller.currentLevel = store.state.userStats.stats.currentLevel + 1;
+        }
+        controller.addPoints(gameStore.state.points);
         endGameWithMessage('Уровень пройден!');
     }
+}
+
+function onPointsChange() {
+    points.innerText = gameStore.state.points || '';
 }
 
 let userArrowListener;
@@ -137,10 +152,10 @@ function onBlockOwnerChange() {
                 .then(target => {
                     tnt.remove();
                     tnt = undefined;
+                    gameStore.attemptsLeft = gameStore.state.attemptsLeft - 1;
                     if (target === bonfire) {
                         gameStore.hitsLeft = gameStore.state.hitsLeft - 1;
                     }
-                    gameStore.attemptsLeft = gameStore.state.attemptsLeft - 1;
                 });
             gameStore.force = undefined;
         });
@@ -151,19 +166,15 @@ function onBlockOwnerChange() {
         window.removeEventListener('mousemove', userArrowListener);
         userForceListener = undefined;
         userArrowListener = undefined;
-        if (tnt) {
-            tnt.remove();
-            tnt = undefined;
-        }
-        if (arrow) {
-            arrow.remove();
-            arrow = undefined;
-        }
+        tnt.remove();
+        tnt = undefined;
+        arrow.remove();
+        arrow = undefined;
     }
 }
 
 function createThirdLevel() {
-    const element = convertToNode(firstLevel);
+    const element = convertToNode(thirdLevel);
 
     field = element.querySelector('#field');
 
@@ -175,6 +186,7 @@ function createThirdLevel() {
     timeLeft = element.querySelector('#time-left');
     attemptsLeft = element.querySelector('#attempts-left');
     hitsLeft = element.querySelector('#hits-left');
+    points = element.querySelector('#points');
 
     userImg.src = 'steve.webp';
     userImg.alt = 'user';
@@ -197,8 +209,9 @@ function createThirdLevel() {
     gameStore.subscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChange);
     gameStore.subscribe(GameStoreEvent.FORCE_CHANGE, onForceChange);
     gameStore.subscribe(GameStoreEvent.TIME_LEFT_CHANGE, onTimeLeftChange);
-    gameStore.subscribe(GameStoreEvent.HITS_LEFT_CHANGE, onHitsLeftChange);
     gameStore.subscribe(GameStoreEvent.ATTEMPTS_LEFT_CHANGE, onAttemptsLeftChange);
+    gameStore.subscribe(GameStoreEvent.HITS_LEFT_CHANGE, onHitsLeftChange);
+    gameStore.subscribe(GameStoreEvent.POINTS_CHANGE, onPointsChange);
     window.addEventListener('keydown', userMovementListener);
     gameStore.timeLeft = config.TIME_LEFT.A_LOT;
     gameStore.hitsLeft = config.HITS.A_LOT;
@@ -212,9 +225,9 @@ function createThirdLevel() {
     });
 
     function dispose () {
-        window.removeEventListener('mousemove', userArrowListener);
-        window.removeEventListener('keydown', userMovementListener);
         timeTicker.cancel();
+        window.removeEventListener('keydown', userMovementListener);
+        gameStore.unsubscribe(GameStoreEvent.POINTS_CHANGE, onPointsChange);
         gameStore.unsubscribe(GameStoreEvent.TIME_LEFT_CHANGE, onTimeLeftChange);
         gameStore.unsubscribe(GameStoreEvent.ATTEMPTS_LEFT_CHANGE, onAttemptsLeftChange);
         gameStore.unsubscribe(GameStoreEvent.HITS_LEFT_CHANGE, onHitsLeftChange);
@@ -228,21 +241,21 @@ function createThirdLevel() {
     };
 }
 
-let currentFirstLevel;
+let currentThirdLevel;
 
 store.subscribe(StoreEvent.APPLICATION_STATE_CHANGE, () => {
-    if (store.state.applicationStage === ApplicationStage.THIRD_LEVEL) {
-        currentFirstLevel = createFirstLevel();
+    if (store.state.applicationStage === ApplicationStage.FIRST_LEVEL) {
+        currentThirdLevel = createFirstLevel();
         document.getElementById(CONTAINER_ID)
-            .appendChild(currentFirstLevel.element);
+            .appendChild(currentThirdLevel.element);
 
         fieldRect = field.getBoundingClientRect();
         barrierRect = barrier.getBoundingClientRect();
 
         moveBonfireToRandomPosition();
-    } else if (currentFirstLevel) {
-        currentFirstLevel.dispose();
-        currentFirstLevel.element.remove();
-        currentFirstLevel = undefined;
+    } else if (currentThirdLevel) {
+        currentThirdLevel.dispose();
+        currentThirdLevel.element.remove();
+        currentThirdLevel = undefined;
     }
 });

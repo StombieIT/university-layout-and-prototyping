@@ -106,7 +106,7 @@ function onAttemptsLeftChange() {
 function onHitsLeftChange() {
     hitsLeft.innerText = gameStore.state.hitsLeft;
 
-    const pointsToAdd = Math.round(gameStore.state.attemptsLeft * gameStore.state.timeLeft / 1000);
+    const pointsToAdd = Math.round((gameStore.state.attemptsLeft + 1) * gameStore.state.timeLeft / 1000);
     if (!gameStore.state.points) {
         gameStore.points = pointsToAdd;
     } else {
@@ -227,7 +227,6 @@ function createFirstLevel() {
     function dispose () {
         timeTicker.cancel();
         window.removeEventListener('keydown', userMovementListener);
-        // gameStore.tntOwner = undefined;
         gameStore.unsubscribe(GameStoreEvent.POINTS_CHANGE, onPointsChange);
         gameStore.unsubscribe(GameStoreEvent.TIME_LEFT_CHANGE, onTimeLeftChange);
         gameStore.unsubscribe(GameStoreEvent.ATTEMPTS_LEFT_CHANGE, onAttemptsLeftChange);
