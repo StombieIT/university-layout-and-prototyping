@@ -214,9 +214,6 @@ function createFirstLevel() {
     function dispose () {
         window.removeEventListener('mousemove', userArrowListener);
         window.removeEventListener('keydown', userMovementListener);
-        // if (gameStore.state.tntOwner) {
-        //     gameStore.tntOwner = undefined;
-        // }
         timeTicker.cancel();
         gameStore.unsubscribe(GameStoreEvent.TIME_LEFT_CHANGE, onTimeLeftChange);
         gameStore.unsubscribe(GameStoreEvent.ATTEMPTS_LEFT_CHANGE, onAttemptsLeftChange);
