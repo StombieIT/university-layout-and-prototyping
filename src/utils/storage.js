@@ -2,6 +2,10 @@ import {createEmptyStats} from "@/utils/stats";
 
 const STATS_KEY = 'stats';
 
+export function getWholeStats() {
+    return JSON.parse(localStorage.getItem(STATS_KEY));
+}
+
 export function getOrCreateStats(login) {
     const stringifiedStats = localStorage.getItem(STATS_KEY);
 

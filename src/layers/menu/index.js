@@ -2,7 +2,11 @@ import './menu.scss';
 import {store, StoreEvent} from '@/store';
 import {ApplicationStage, CONTAINER_ID} from '@/constants';
 import {convertToNode} from "@/utils/html";
+import ratingTemplate from "@/templates/rating.html";
 import menu from "@/templates/menu.html";
+import {getWholeStats} from "@/utils/storage";
+import config from "@/config";
+import {createRatingStat} from "@/components/ratingStat";
 
 function onMenuClick(evt) {
     if (evt.target.classList.contains('level')) {
@@ -35,7 +39,15 @@ function createMenu() {
         if (levelNum > store.state.userStats.stats.currentLevel) {
             level.classList.add('__inactive');
         }
-    })
+    });
+
+    const rating = convertToNode(ratingTemplate);
+    Object.entries(getWholeStats())
+        .sort(([, stats1], [, stats2]) => stats2.points - stats1.points)
+        .slice(config)
+        .forEach(([login, {points}]) => rating.appendChild(createRatingStat({login, points})));
+
+    element.appendChild(rating);
 
     element.addEventListener('click', onMenuClick);
 

@@ -2,14 +2,33 @@
 @import "../../extends";
 
 .menu {
-  @extend %wrapper;
   display: flex;
   align-items: center;
+  perspective: 1000px;
 }
 
 .levels {
+  @extend %wrapper;
   display: flex;
   flex-direction: column;
+  animation: 5s rotating linear infinite;
+}
+
+.rating {
+  @extend %wrapper;
+  font-size: 20px;
+  margin-left: 50px;
+  min-width: 600px;
+}
+
+.rating-stat {
+  padding: 5px 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.rating-stat:nth-child(2n) {
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .level {
@@ -22,5 +41,15 @@
 
   + .level {
     margin-top: 30px;
+  }
+}
+
+@keyframes rotating {
+  33% {
+    transform: rotateZ(5deg) rotateY(20deg);
+  }
+
+  67% {
+    transform: rotateZ(-5deg) rotateY(-20deg);
   }
 }
