@@ -1,24 +1,24 @@
 import {store, StoreEvent} from '@/store';
 import {ApplicationStage, CONTAINER_ID} from '@/constants';
-import {calculateTntFallPosition, convertToNode, moveToPosition, throwTnt} from '@/utils/html';
-import thirdLevel from '@/templates/third-level.html';
+import {convertToNode, throwTnt} from '@/utils/html';
+import secondLevel from '@/templates/second-level.html'
 import messageTemplate from '@/templates/message.html';
 import {createForceListener, createUserArrowListener, createUserMovementListener} from "@/game/listeners";
 import config from '@/config';
+import {randomInt} from "@/utils/random";
 import {GameStore, GameStoreEvent, TntOwner} from "@/store/game-store";
 import {createTnt} from "@/components/tnt";
 import {createArrow} from "@/components/arrow";
 import forceBarTemplate from "@/templates/force-bar.html";
 import {convertToTimeLeftRepresentation, createInfiniteTicker} from "@/utils/time";
 import {controller} from "@/store/controller";
-import {randomInt} from "@/utils/random";
 
 let field;
 let fieldRect;
 let user;
-let barrier;
+let barriers;
 let barrierRect;
-let computer;
+let bonfire;
 let tnt;
 let arrow;
 let rightPanel;
@@ -26,6 +26,7 @@ let timeLeft;
 let attemptsLeft;
 let hitsLeft;
 let points;
+let quitButton;
 
 const gameStore = new GameStore({
     angle: 0
@@ -56,14 +57,23 @@ function endGameWithMessage(messageText) {
     );
 }
 
+function moveBonfireToRandomPosition() {
+    const bonfirePosition = randomInt(
+        barrierRect.left + barrierRect.width,
+        fieldRect.width - bonfire.getBoundingClientRect().width
+    );
+
+    bonfire.style.left = `${bonfirePosition}px`;
+}
+
 function onQuit() {
     endGameWithMessage('Игра окончена!');
 }
 
 function reset() {
-    gameStore.timeLeft = config.TIME_LEFT.A_LOT;
+    gameStore.timeLeft = config.TIME_LEFT.FEW;
     gameStore.hitsLeft = config.HITS.A_LOT;
-    gameStore.attemptsLeft = config.HITS.A_LOT;
+    gameStore.attemptsLeft = config.ATTEMPTS.FEW;
     gameStore.points = 0;
 }
 
@@ -97,17 +107,17 @@ function onTimeLeftChange() {
 function onAttemptsLeftChange() {
     attemptsLeft.innerText = gameStore.state.attemptsLeft;
 
-    if (gameStore.state.attemptsLeft === 0) {
-        endGameWithMessage('Уровень не пройден!');
-    } else {
+    if (gameStore.state.attemptsLeft >= gameStore.state.hitsLeft) {
         gameStore.tntOwner = TntOwner.USER;
+    } else {
+        endGameWithMessage('Попытки закончились!');
     }
 }
 
 function onHitsLeftChange() {
     hitsLeft.innerText = gameStore.state.hitsLeft;
 
-    const pointsToAdd = Math.round(config.POINTS_RATIO.A_LOT * (gameStore.state.attemptsLeft + 1) * gameStore.state.timeLeft / 1000);
+    const pointsToAdd = Math.round((gameStore.state.attemptsLeft + 1) * gameStore.state.timeLeft / 1000);
     if (!gameStore.state.points) {
         gameStore.points = pointsToAdd;
     } else {
@@ -115,10 +125,11 @@ function onHitsLeftChange() {
     }
 
     if (gameStore.state.hitsLeft === 0) {
+        if (store.state.userStats.stats.currentLevel === 1) {
+            controller.currentLevel = store.state.userStats.stats.currentLevel + 1;
+        }
         controller.addPoints(gameStore.state.points);
         endGameWithMessage('Уровень пройден!');
-    } else {
-        gameStore.tntOwner = TntOwner.USER;
     }
 }
 
@@ -126,45 +137,10 @@ function onPointsChange() {
     points.innerText = gameStore.state.points ?? '';
 }
 
-let computerTnt;
-
-function onBlockOwnerChangeToComputer() {
-    if (gameStore.state.tntOwner === TntOwner.COMPUTER) {
-        computerTnt = createTnt({});
-        field.appendChild(computerTnt);
-
-        const computerRect = computer.getBoundingClientRect();
-        const computerTntRect = computerTnt.getBoundingClientRect();
-        const computerTntInitialPosition = {
-            x: computerRect.left - fieldRect.left + computerRect.width / 2 - computerTntRect.width / 2,
-            y: computerRect.top - fieldRect.top + computerRect.height / 2 - computerTntRect.height / 2
-        };
-
-        const params = [field, computerTnt,
-            computerTntInitialPosition, 5 * (config.FORCE.MIN + config.FORCE.MAX) / 6, randomInt(Math.PI / 2, 3 * Math.PI / 4), [
-                user,
-                barrier
-            ]];
-
-        throwTnt(...params).promise.then(target => {
-            if (target === user) {
-                gameStore.tntOwner = TntOwner.USER;
-            } else {
-                gameStore.hitsLeft = gameStore.state.hitsLeft - 1;
-            }
-        });
-    } else {
-        if (computerTnt) {
-            computerTnt.remove();
-            computerTnt = undefined;
-        }
-    }
-}
-
 let userArrowListener;
 let userForceListener;
 
-function onBlockOwnerChangeToUser() {
+function onBlockOwnerChange() {
     if (gameStore.state.tntOwner === TntOwner.USER) {
         tnt = createTnt({isActive: true});
         arrow = createArrow();
@@ -181,107 +157,77 @@ function onBlockOwnerChangeToUser() {
                 x: userRect.left - fieldRect.left + userRect.width / 2 - tntRect.width / 2,
                 y: userRect.top - fieldRect.top + userRect.height / 2 - tntRect.height / 2
             };
-
             // TODO: обработать закрытие
-            throwTnt(field, tnt, tntInitialPosition, gameStore.state.force, gameStore.state.angle, [
-                barrier,
-                computer
-            ])
+            throwTnt(field, tnt, tntInitialPosition, gameStore.state.force, gameStore.state.angle, [...barriers, bonfire])
                 .promise
                 .then(target => {
                     tnt.remove();
                     tnt = undefined;
-                    if (target === computer) {
-                        gameStore.tntOwner = TntOwner.COMPUTER;
-                    } else {
-                        gameStore.attemptsLeft = gameStore.state.attemptsLeft - 1;
+                    gameStore.attemptsLeft = gameStore.state.attemptsLeft - 1;
+                    if (target === bonfire) {
+                        gameStore.hitsLeft = gameStore.state.hitsLeft - 1;
                     }
                 });
-
-            const tntFallPosition = calculateTntFallPosition(
-                tntInitialPosition,
-                tntRect.height, fieldRect.height,
-                gameStore.state.force, gameStore.state.angle
-            );
-
-            const computerRect = computer.getBoundingClientRect();
-            const computerInitialPosition = computerRect.left - fieldRect.left;
-
-            const computerPosition = Math.max(
-                barrierRect.left + barrierRect.width,
-                Math.min(
-                    tntFallPosition,
-                    fieldRect.width - computerRect.width
-                )
-            );
-
-            moveToPosition(computer, computerInitialPosition, computerPosition);
-
             gameStore.force = undefined;
         });
         window.addEventListener('mousemove', userArrowListener);
         window.addEventListener('keydown', userForceListener);
     } else {
-        if (userForceListener) {
-            window.removeEventListener('keydown', userForceListener);
-            userForceListener = undefined;
-        }
-        if (userArrowListener) {
-            window.removeEventListener('mousemove', userArrowListener);
-            userArrowListener = undefined;
-        }
-        if (tnt) {
-            tnt.remove();
-            tnt = undefined;
-        }
-        if (arrow) {
-            arrow.remove();
-            arrow = undefined;
-        }
+        window.removeEventListener('keydown', userForceListener);
+        window.removeEventListener('mousemove', userArrowListener);
+        userForceListener = undefined;
+        userArrowListener = undefined;
+        tnt.remove();
+        tnt = undefined;
+        arrow.remove();
+        arrow = undefined;
     }
 }
 
-function createThirdLevel() {
-    const element = convertToNode(thirdLevel);
-
-    const steveImgs = element.querySelectorAll('img.steve');
-
-    Array.from(steveImgs).forEach(steve => {
-        steve.src = 'steve.webp';
-        steve.alt = 'steve';
-    });
+function createSecondLevel() {
+    const element = convertToNode(secondLevel);
 
     field = element.querySelector('#field');
 
     user = element.querySelector('#user');
+    const userImg = user.querySelector('img');
 
-    computer = element.querySelector('#computer');
 
     rightPanel = element.querySelector('#right-panel');
     timeLeft = element.querySelector('#time-left');
     attemptsLeft = element.querySelector('#attempts-left');
     hitsLeft = element.querySelector('#hits-left');
     points = element.querySelector('#points');
-    barrier = element.querySelector('.barrier');
 
-    const blocks = barrier.querySelectorAll('.mine-block');
+    userImg.src = 'steve.webp';
+    userImg.alt = 'user';
 
-    Array.from(blocks)
+    barriers = Array.from(element.querySelectorAll('.barrier'));
+    const blocks = element.querySelectorAll('.mine-block');
+
+    bonfire = element.querySelector('#bonfire');
+    bonfire.src = './bonfire.webp';
+    bonfire.alt = 'bonfire';
+
+    quitButton = element.querySelector('#quit-btn');
+
+    blocks
         .forEach(block => {
             block.src = './wood.png';
             block.alt = 'wood';
         });
 
-    const userMovementListener = createUserMovementListener(config.USER_SPEED, field, user, barrier);
+    const userMovementListener = createUserMovementListener(config.USER_SPEED, field, user, barriers[0]);
 
-    gameStore.subscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChangeToUser);
-    gameStore.subscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChangeToComputer);
+    gameStore.subscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChange);
     gameStore.subscribe(GameStoreEvent.FORCE_CHANGE, onForceChange);
     gameStore.subscribe(GameStoreEvent.TIME_LEFT_CHANGE, onTimeLeftChange);
     gameStore.subscribe(GameStoreEvent.ATTEMPTS_LEFT_CHANGE, onAttemptsLeftChange);
     gameStore.subscribe(GameStoreEvent.HITS_LEFT_CHANGE, onHitsLeftChange);
     gameStore.subscribe(GameStoreEvent.POINTS_CHANGE, onPointsChange);
+    quitButton.addEventListener('click', onQuit);
     window.addEventListener('keydown', userMovementListener);
+
     reset();
 
     const timeTicker = createInfiniteTicker(timeSpent => {
@@ -294,12 +240,12 @@ function createThirdLevel() {
     function dispose () {
         timeTicker.cancel();
         window.removeEventListener('keydown', userMovementListener);
+        quitButton.removeEventListener('click', onQuit);
         gameStore.unsubscribe(GameStoreEvent.POINTS_CHANGE, onPointsChange);
         gameStore.unsubscribe(GameStoreEvent.TIME_LEFT_CHANGE, onTimeLeftChange);
         gameStore.unsubscribe(GameStoreEvent.ATTEMPTS_LEFT_CHANGE, onAttemptsLeftChange);
         gameStore.unsubscribe(GameStoreEvent.HITS_LEFT_CHANGE, onHitsLeftChange);
-        gameStore.unsubscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChangeToComputer);
-        gameStore.unsubscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChangeToUser);
+        gameStore.unsubscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChange);
         gameStore.unsubscribe(GameStoreEvent.FORCE_CHANGE, onForceChange);
     }
 
@@ -309,23 +255,21 @@ function createThirdLevel() {
     };
 }
 
-let currentThirdLevel;
+let currentSecondLevel;
 
 store.subscribe(StoreEvent.APPLICATION_STATE_CHANGE, () => {
-    if (store.state.applicationStage === ApplicationStage.THIRD_LEVEL) {
-        currentThirdLevel = createThirdLevel();
+    if (store.state.applicationStage === ApplicationStage.SECOND_LEVEL) {
+        currentSecondLevel = createSecondLevel();
         document.getElementById(CONTAINER_ID)
-            .appendChild(currentThirdLevel.element);
+            .appendChild(currentSecondLevel.element);
 
         fieldRect = field.getBoundingClientRect();
-        barrierRect = barrier.getBoundingClientRect();
-        computer.style.left = randomInt(
-            barrierRect.left + barrierRect.width,
-                fieldRect.width - computer.getBoundingClientRect().width
-        );
-    } else if (currentThirdLevel) {
-        currentThirdLevel.dispose();
-        currentThirdLevel.element.remove();
-        currentThirdLevel = undefined;
+        barrierRect = barriers[0].getBoundingClientRect();
+
+        moveBonfireToRandomPosition();
+    } else if (currentSecondLevel) {
+        currentSecondLevel.dispose();
+        currentSecondLevel.element.remove();
+        currentSecondLevel = undefined;
     }
 });

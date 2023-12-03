@@ -19,6 +19,7 @@ export function convertToNode(str) {
 
 function isBumpedIntoTarget(objectMetrics, targetMetrics) {
     return objectMetrics.y + objectMetrics.height > targetMetrics.y &&
+        objectMetrics.y < targetMetrics.y + targetMetrics.height &&
         objectMetrics.x + objectMetrics.width > targetMetrics.x &&
         objectMetrics.x < targetMetrics.x + targetMetrics.width;
 }
