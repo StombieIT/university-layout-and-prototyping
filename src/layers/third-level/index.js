@@ -115,7 +115,7 @@ function onHitsLeftChange() {
     }
 
     if (gameStore.state.hitsLeft === 0) {
-        // controller.addPoints(gameStore.state.points);
+        controller.addPoints(gameStore.state.points);
         endGameWithMessage('Уровень пройден!');
     } else {
         gameStore.tntOwner = TntOwner.USER;
@@ -152,7 +152,6 @@ function onBlockOwnerChangeToComputer() {
             } else {
                 gameStore.hitsLeft = gameStore.state.hitsLeft - 1;
             }
-            // gameStore.tntOwner = TntOwner.USER;
         });
     } else {
         if (computerTnt) {
@@ -197,17 +196,6 @@ function onBlockOwnerChangeToUser() {
                     } else {
                         gameStore.attemptsLeft = gameStore.state.attemptsLeft - 1;
                     }
-                    // if (target === computer) {
-                    //     gameStore.tntOwner = TntOwner.COMPUTER;
-                    // } else {
-                    //     gameStore.tntOwner = TntOwner.USER;
-                    // }
-                    // tnt.remove();
-                    // tnt = undefined;
-                    // gameStore.attemptsLeft = gameStore.state.attemptsLeft - 1;
-                    // if (target === computer) {
-                    //     gameStore.hitsLeft = gameStore.state.hitsLeft - 1;
-                    // }
                 });
 
             const tntFallPosition = calculateTntFallPosition(
