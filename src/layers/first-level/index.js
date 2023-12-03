@@ -26,6 +26,7 @@ let timeLeft;
 let attemptsLeft;
 let hitsLeft;
 let points;
+let quitButton;
 
 const gameStore = new GameStore({
     angle: 0
@@ -65,6 +66,17 @@ function moveBonfireToRandomPosition() {
     bonfire.style.left = `${bonfirePosition}px`;
 }
 
+function onQuit() {
+    endGameWithMessage('Игра окончена!');
+}
+
+function reset() {
+    gameStore.timeLeft = config.TIME_LEFT.A_LOT;
+    gameStore.hitsLeft = config.HITS.A_LOT;
+    gameStore.attemptsLeft = config.ATTEMPTS.A_LOT;
+    gameStore.points = 0;
+}
+
 let forceBar;
 let progress;
 
@@ -78,7 +90,6 @@ function onForceChange() {
         const forceProgress = (gameStore.state.force - config.FORCE.MIN) * 100 / (config.FORCE.MAX - config.FORCE.MIN);
         progress.style.transform = `translateX(${forceProgress - 100}%)`;
     } else {
-        console.log('FB', forceBar);
         forceBar.remove();
         forceBar = undefined;
         progress = undefined;
@@ -123,7 +134,7 @@ function onHitsLeftChange() {
 }
 
 function onPointsChange() {
-    points.innerText = gameStore.state.points || '';
+    points.innerText = gameStore.state.points ?? '';
 }
 
 let userArrowListener;
@@ -198,6 +209,8 @@ function createFirstLevel() {
     bonfire.src = './bonfire.webp';
     bonfire.alt = 'bonfire';
 
+    quitButton = element.querySelector('#quit-btn');
+
     blocks
         .forEach(block => {
             block.src = './wood.png';
@@ -212,10 +225,10 @@ function createFirstLevel() {
     gameStore.subscribe(GameStoreEvent.ATTEMPTS_LEFT_CHANGE, onAttemptsLeftChange);
     gameStore.subscribe(GameStoreEvent.HITS_LEFT_CHANGE, onHitsLeftChange);
     gameStore.subscribe(GameStoreEvent.POINTS_CHANGE, onPointsChange);
+    quitButton.addEventListener('click', onQuit);
     window.addEventListener('keydown', userMovementListener);
-    gameStore.timeLeft = config.TIME_LEFT.A_LOT;
-    gameStore.hitsLeft = config.HITS.A_LOT;
-    gameStore.attemptsLeft = config.ATTEMPTS.A_LOT;
+
+    reset();
 
     const timeTicker = createInfiniteTicker(timeSpent => {
         gameStore.timeLeft = Math.max(0, gameStore.state.timeLeft - timeSpent);
@@ -227,6 +240,7 @@ function createFirstLevel() {
     function dispose () {
         timeTicker.cancel();
         window.removeEventListener('keydown', userMovementListener);
+        quitButton.removeEventListener('click', onQuit);
         gameStore.unsubscribe(GameStoreEvent.POINTS_CHANGE, onPointsChange);
         gameStore.unsubscribe(GameStoreEvent.TIME_LEFT_CHANGE, onTimeLeftChange);
         gameStore.unsubscribe(GameStoreEvent.ATTEMPTS_LEFT_CHANGE, onAttemptsLeftChange);

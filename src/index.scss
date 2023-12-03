@@ -74,7 +74,17 @@ ul {
   transform: scaleX(-1);
 }
 
+.steve.__inverse {
+  transform: unset;
+}
+
 #user {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+#computer {
   position: absolute;
   left: 0;
   bottom: 0;

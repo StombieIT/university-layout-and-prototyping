@@ -1,6 +1,8 @@
 {
+  "MOVEMENT_ERROR": 10,
   "GRAVITY_ACCELERATION": 300,
   "USER_SPEED": 0.5,
+  "COMPUTER_SPEED": 0.3,
   "FORCE": {
     "MIN": 0.01,
     "MAX": 1000,
@@ -20,7 +22,11 @@
   },
   "HITS": {
     "FEW": 2,
-    "A_LOT": 1
+    "A_LOT": 3
+  },
+  "POINTS_RATIO": {
+    "A_FET": 1,
+    "A_LOT": 3
   },
   "END_GAME_DELAY": 3000
 }

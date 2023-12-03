@@ -10,13 +10,16 @@ export const GameStoreEvent = {
 };
 
 export const TntOwner = {
-    USER: 'USER'
+    USER: 'USER',
+    COMPUTER: 'COMPUTER'
 };
 
 export class GameStore extends Observer {
     set tntOwner(value) {
-        this.state.tntOwner = value;
-        this.notify(GameStoreEvent.TNT_OWNER_CHANGE);
+        if (this.state.tntOwner !== value) {
+            this.state.tntOwner = value;
+            this.notify(GameStoreEvent.TNT_OWNER_CHANGE);
+        }
     }
 
     set force(value) {

@@ -1,24 +1,24 @@
 import {store, StoreEvent} from '@/store';
 import {ApplicationStage, CONTAINER_ID} from '@/constants';
-import {convertToNode, throwTnt} from '@/utils/html';
-import thirdLevel from '@/templates/first-level.html'
+import {calculateTntFallPosition, convertToNode, moveToPosition, throwTnt} from '@/utils/html';
+import thirdLevel from '@/templates/third-level.html';
 import messageTemplate from '@/templates/message.html';
 import {createForceListener, createUserArrowListener, createUserMovementListener} from "@/game/listeners";
 import config from '@/config';
-import {randomInt} from "@/utils/random";
 import {GameStore, GameStoreEvent, TntOwner} from "@/store/game-store";
 import {createTnt} from "@/components/tnt";
 import {createArrow} from "@/components/arrow";
 import forceBarTemplate from "@/templates/force-bar.html";
 import {convertToTimeLeftRepresentation, createInfiniteTicker} from "@/utils/time";
 import {controller} from "@/store/controller";
+import {randomInt} from "@/utils/random";
 
 let field;
 let fieldRect;
 let user;
 let barrier;
 let barrierRect;
-let bonfire;
+let computer;
 let tnt;
 let arrow;
 let rightPanel;
@@ -56,13 +56,15 @@ function endGameWithMessage(messageText) {
     );
 }
 
-function moveBonfireToRandomPosition() {
-    const bonfirePosition = randomInt(
-        barrierRect.left + barrierRect.width,
-        fieldRect.width - bonfire.getBoundingClientRect().width
-    );
+function onQuit() {
+    endGameWithMessage('Игра окончена!');
+}
 
-    bonfire.style.left = `${bonfirePosition}px`;
+function reset() {
+    gameStore.timeLeft = config.TIME_LEFT.A_LOT;
+    gameStore.hitsLeft = config.HITS.A_LOT;
+    gameStore.attemptsLeft = config.HITS.A_LOT;
+    gameStore.points = 0;
 }
 
 let forceBar;
@@ -78,7 +80,6 @@ function onForceChange() {
         const forceProgress = (gameStore.state.force - config.FORCE.MIN) * 100 / (config.FORCE.MAX - config.FORCE.MIN);
         progress.style.transform = `translateX(${forceProgress - 100}%)`;
     } else {
-        console.log('FB', forceBar);
         forceBar.remove();
         forceBar = undefined;
         progress = undefined;
@@ -96,17 +97,17 @@ function onTimeLeftChange() {
 function onAttemptsLeftChange() {
     attemptsLeft.innerText = gameStore.state.attemptsLeft;
 
-    if (gameStore.state.attemptsLeft >= gameStore.state.hitsLeft) {
-        gameStore.tntOwner = TntOwner.USER;
+    if (gameStore.state.attemptsLeft === 0) {
+        endGameWithMessage('Уровень не пройден!');
     } else {
-        endGameWithMessage('Попытки закончились!');
+        gameStore.tntOwner = TntOwner.USER;
     }
 }
 
 function onHitsLeftChange() {
     hitsLeft.innerText = gameStore.state.hitsLeft;
 
-    const pointsToAdd = Math.round((gameStore.state.attemptsLeft + 1) * gameStore.state.timeLeft / 1000);
+    const pointsToAdd = Math.round(config.POINTS_RATIO.A_LOT * (gameStore.state.attemptsLeft + 1) * gameStore.state.timeLeft / 1000);
     if (!gameStore.state.points) {
         gameStore.points = pointsToAdd;
     } else {
@@ -114,22 +115,57 @@ function onHitsLeftChange() {
     }
 
     if (gameStore.state.hitsLeft === 0) {
-        if (store.state.userStats.stats.currentLevel === 0) {
-            controller.currentLevel = store.state.userStats.stats.currentLevel + 1;
-        }
-        controller.addPoints(gameStore.state.points);
+        // controller.addPoints(gameStore.state.points);
         endGameWithMessage('Уровень пройден!');
+    } else {
+        gameStore.tntOwner = TntOwner.USER;
     }
 }
 
 function onPointsChange() {
-    points.innerText = gameStore.state.points || '';
+    points.innerText = gameStore.state.points ?? '';
+}
+
+let computerTnt;
+
+function onBlockOwnerChangeToComputer() {
+    if (gameStore.state.tntOwner === TntOwner.COMPUTER) {
+        computerTnt = createTnt({});
+        field.appendChild(computerTnt);
+
+        const computerRect = computer.getBoundingClientRect();
+        const computerTntRect = computerTnt.getBoundingClientRect();
+        const computerTntInitialPosition = {
+            x: computerRect.left - fieldRect.left + computerRect.width / 2 - computerTntRect.width / 2,
+            y: computerRect.top - fieldRect.top + computerRect.height / 2 - computerTntRect.height / 2
+        };
+
+        const params = [field, computerTnt,
+            computerTntInitialPosition, 5 * (config.FORCE.MIN + config.FORCE.MAX) / 6, randomInt(Math.PI / 2, 3 * Math.PI / 4), [
+                user,
+                barrier
+            ]];
+
+        throwTnt(...params).promise.then(target => {
+            if (target === user) {
+                gameStore.tntOwner = TntOwner.USER;
+            } else {
+                gameStore.hitsLeft = gameStore.state.hitsLeft - 1;
+            }
+            // gameStore.tntOwner = TntOwner.USER;
+        });
+    } else {
+        if (computerTnt) {
+            computerTnt.remove();
+            computerTnt = undefined;
+        }
+    }
 }
 
 let userArrowListener;
 let userForceListener;
 
-function onBlockOwnerChange() {
+function onBlockOwnerChangeToUser() {
     if (gameStore.state.tntOwner === TntOwner.USER) {
         tnt = createTnt({isActive: true});
         arrow = createArrow();
@@ -146,59 +182,104 @@ function onBlockOwnerChange() {
                 x: userRect.left - fieldRect.left + userRect.width / 2 - tntRect.width / 2,
                 y: userRect.top - fieldRect.top + userRect.height / 2 - tntRect.height / 2
             };
+
             // TODO: обработать закрытие
-            throwTnt(field, tnt, tntInitialPosition, gameStore.state.force, gameStore.state.angle, [barrier, bonfire])
+            throwTnt(field, tnt, tntInitialPosition, gameStore.state.force, gameStore.state.angle, [
+                barrier,
+                computer
+            ])
                 .promise
                 .then(target => {
                     tnt.remove();
                     tnt = undefined;
-                    gameStore.attemptsLeft = gameStore.state.attemptsLeft - 1;
-                    if (target === bonfire) {
-                        gameStore.hitsLeft = gameStore.state.hitsLeft - 1;
+                    if (target === computer) {
+                        gameStore.tntOwner = TntOwner.COMPUTER;
+                    } else {
+                        gameStore.attemptsLeft = gameStore.state.attemptsLeft - 1;
                     }
+                    // if (target === computer) {
+                    //     gameStore.tntOwner = TntOwner.COMPUTER;
+                    // } else {
+                    //     gameStore.tntOwner = TntOwner.USER;
+                    // }
+                    // tnt.remove();
+                    // tnt = undefined;
+                    // gameStore.attemptsLeft = gameStore.state.attemptsLeft - 1;
+                    // if (target === computer) {
+                    //     gameStore.hitsLeft = gameStore.state.hitsLeft - 1;
+                    // }
                 });
+
+            const tntFallPosition = calculateTntFallPosition(
+                tntInitialPosition,
+                tntRect.height, fieldRect.height,
+                gameStore.state.force, gameStore.state.angle
+            );
+
+            const computerRect = computer.getBoundingClientRect();
+            const computerInitialPosition = computerRect.left - fieldRect.left;
+
+            const computerPosition = Math.max(
+                barrierRect.left + barrierRect.width,
+                Math.min(
+                    tntFallPosition,
+                    fieldRect.width - computerRect.width
+                )
+            );
+
+            moveToPosition(computer, computerInitialPosition, computerPosition);
+
             gameStore.force = undefined;
         });
         window.addEventListener('mousemove', userArrowListener);
         window.addEventListener('keydown', userForceListener);
     } else {
-        window.removeEventListener('keydown', userForceListener);
-        window.removeEventListener('mousemove', userArrowListener);
-        userForceListener = undefined;
-        userArrowListener = undefined;
-        tnt.remove();
-        tnt = undefined;
-        arrow.remove();
-        arrow = undefined;
+        if (userForceListener) {
+            window.removeEventListener('keydown', userForceListener);
+            userForceListener = undefined;
+        }
+        if (userArrowListener) {
+            window.removeEventListener('mousemove', userArrowListener);
+            userArrowListener = undefined;
+        }
+        if (tnt) {
+            tnt.remove();
+            tnt = undefined;
+        }
+        if (arrow) {
+            arrow.remove();
+            arrow = undefined;
+        }
     }
 }
 
 function createThirdLevel() {
     const element = convertToNode(thirdLevel);
 
+    const steveImgs = element.querySelectorAll('img.steve');
+
+    Array.from(steveImgs).forEach(steve => {
+        console.log('steves', steve)
+        steve.src = 'steve.webp';
+        steve.alt = 'steve';
+    });
+
     field = element.querySelector('#field');
 
     user = element.querySelector('#user');
-    const userImg = user.querySelector('img');
 
+    computer = element.querySelector('#computer');
 
     rightPanel = element.querySelector('#right-panel');
     timeLeft = element.querySelector('#time-left');
     attemptsLeft = element.querySelector('#attempts-left');
     hitsLeft = element.querySelector('#hits-left');
     points = element.querySelector('#points');
-
-    userImg.src = 'steve.webp';
-    userImg.alt = 'user';
-
     barrier = element.querySelector('.barrier');
+
     const blocks = barrier.querySelectorAll('.mine-block');
 
-    bonfire = element.querySelector('#bonfire');
-    bonfire.src = './bonfire.webp';
-    bonfire.alt = 'bonfire';
-
-    blocks
+    Array.from(blocks)
         .forEach(block => {
             block.src = './wood.png';
             block.alt = 'wood';
@@ -206,16 +287,15 @@ function createThirdLevel() {
 
     const userMovementListener = createUserMovementListener(config.USER_SPEED, field, user, barrier);
 
-    gameStore.subscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChange);
+    gameStore.subscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChangeToUser);
+    gameStore.subscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChangeToComputer);
     gameStore.subscribe(GameStoreEvent.FORCE_CHANGE, onForceChange);
     gameStore.subscribe(GameStoreEvent.TIME_LEFT_CHANGE, onTimeLeftChange);
     gameStore.subscribe(GameStoreEvent.ATTEMPTS_LEFT_CHANGE, onAttemptsLeftChange);
     gameStore.subscribe(GameStoreEvent.HITS_LEFT_CHANGE, onHitsLeftChange);
     gameStore.subscribe(GameStoreEvent.POINTS_CHANGE, onPointsChange);
     window.addEventListener('keydown', userMovementListener);
-    gameStore.timeLeft = config.TIME_LEFT.A_LOT;
-    gameStore.hitsLeft = config.HITS.A_LOT;
-    gameStore.attemptsLeft = config.ATTEMPTS.A_LOT;
+    reset();
 
     const timeTicker = createInfiniteTicker(timeSpent => {
         gameStore.timeLeft = Math.max(0, gameStore.state.timeLeft - timeSpent);
@@ -231,7 +311,8 @@ function createThirdLevel() {
         gameStore.unsubscribe(GameStoreEvent.TIME_LEFT_CHANGE, onTimeLeftChange);
         gameStore.unsubscribe(GameStoreEvent.ATTEMPTS_LEFT_CHANGE, onAttemptsLeftChange);
         gameStore.unsubscribe(GameStoreEvent.HITS_LEFT_CHANGE, onHitsLeftChange);
-        gameStore.unsubscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChange);
+        gameStore.unsubscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChangeToComputer);
+        gameStore.unsubscribe(GameStoreEvent.TNT_OWNER_CHANGE, onBlockOwnerChangeToUser);
         gameStore.unsubscribe(GameStoreEvent.FORCE_CHANGE, onForceChange);
     }
 
@@ -244,15 +325,17 @@ function createThirdLevel() {
 let currentThirdLevel;
 
 store.subscribe(StoreEvent.APPLICATION_STATE_CHANGE, () => {
-    if (store.state.applicationStage === ApplicationStage.FIRST_LEVEL) {
-        currentThirdLevel = createFirstLevel();
+    if (store.state.applicationStage === ApplicationStage.THIRD_LEVEL) {
+        currentThirdLevel = createThirdLevel();
         document.getElementById(CONTAINER_ID)
             .appendChild(currentThirdLevel.element);
 
         fieldRect = field.getBoundingClientRect();
         barrierRect = barrier.getBoundingClientRect();
-
-        moveBonfireToRandomPosition();
+        computer.style.left = randomInt(
+            barrierRect.left + barrierRect.width,
+                fieldRect.width - computer.getBoundingClientRect().width
+        );
     } else if (currentThirdLevel) {
         currentThirdLevel.dispose();
         currentThirdLevel.element.remove();

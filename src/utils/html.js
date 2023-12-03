@@ -1,4 +1,4 @@
-import {createInfiniteAbsoluteTicker} from "@/utils/time";
+import {createInfiniteAbsoluteTicker, createInfiniteTicker} from "@/utils/time";
 import config from "@/config";
 
 const DOM_PARSER_INSTANCE = new DOMParser();
@@ -84,4 +84,25 @@ export function throwTnt(field, tnt, tntInitialPosition, force, angle = Math.PI 
         stop,
         promise: ticker.promise
     };
+}
+
+export function moveToPosition(target, initialPosition, position, speed = config.COMPUTER_SPEED) {
+    const delta = position - initialPosition;
+    const deltaRatio = delta / Math.abs(delta);
+    let currentPosition = initialPosition;
+
+    const ticker = createInfiniteTicker(timeSpent => {
+        if (Math.abs(currentPosition - position) < config.MOVEMENT_ERROR) {
+            ticker.cancel();
+            return;
+        }
+        currentPosition += timeSpent * deltaRatio * speed;
+        target.style.left = currentPosition;
+    });
+
+    return ticker;
+}
+
+export function calculateTntFallPosition(tntInitialPosition, tntHeight, fieldHeight, force, angle) {
+    return tntInitialPosition.x + (force * Math.sin(angle) + Math.sqrt((force * Math.sin(angle)) ** 2 - 4 * (tntInitialPosition.y - fieldHeight + tntHeight) * config.GRAVITY_ACCELERATION)) * force * Math.cos(angle) / (2 * config.GRAVITY_ACCELERATION);
 }
