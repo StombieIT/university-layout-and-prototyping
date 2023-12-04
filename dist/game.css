@@ -1,5 +1,12 @@
-@import "constants";
-@import "extends";
+/*!*********************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/index.scss ***!
+  \*********************************************************************************************************/
+#message, .banner {
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  padding: 20px;
+}
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -40,7 +47,7 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $bg;
+  background: linear-gradient(#e66465, #9198e5);
 }
 
 .background {
@@ -64,10 +71,9 @@ ul {
   position: absolute;
   bottom: 0;
   width: 100px;
-
-  img {
-    width: 100%;
-  }
+}
+#bonfire img {
+  width: 100%;
 }
 
 .steve {
@@ -108,16 +114,14 @@ ul {
   flex-direction: column;
   z-index: 2;
   height: fit-content;
-
-  &.__second {
-    top: 0;
-    left: 80%;
-
-    .mine-block {
-      width: 72px;
-      height: 72px;
-    }
-  }
+}
+.barrier.__second {
+  top: 0;
+  left: 80%;
+}
+.barrier.__second .mine-block {
+  width: 72px;
+  height: 72px;
 }
 
 .mine-block {
@@ -125,15 +129,13 @@ ul {
   height: 128px;
 }
 
-$arrowWidth: 60px;
-
 #arrow {
   width: 100px;
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translateX($arrowWidth) translateY(-50%);
-  transform-origin: -$arrowWidth;
+  transform: translateX(60px) translateY(-50%);
+  transform-origin: -60px;
 }
 
 #force-bar {
@@ -147,16 +149,15 @@ $arrowWidth: 60px;
   overflow: hidden;
   width: 30vw;
   height: 30px;
-
-  .progress {
-    background: $bg;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    transform: translateX(-100%);
-  }
+}
+#force-bar .progress {
+  background: linear-gradient(#e66465, #9198e5);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transform: translateX(-100%);
 }
 
 .game {
@@ -174,7 +175,6 @@ $arrowWidth: 60px;
 }
 
 .banner {
-  @extend %wrapper;
   width: 100%;
   height: fit-content;
   display: flex;
@@ -182,11 +182,7 @@ $arrowWidth: 60px;
   align-items: center;
 }
 
-#message {
-  @extend %wrapper;
-}
-
-.info {
+.info, #time-left {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -198,7 +194,6 @@ $arrowWidth: 60px;
 }
 
 #time-left {
-  @extend .info;
   margin: 5px;
   font-size: 22px;
   width: fit-content;

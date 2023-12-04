@@ -26,6 +26,7 @@ let timeLeft;
 let attemptsLeft;
 let hitsLeft;
 let points;
+let quitButton;
 
 const gameStore = new GameStore({
     angle: 0
@@ -251,6 +252,9 @@ function createThirdLevel() {
         steve.alt = 'steve';
     });
 
+    const backgroundImg = element.querySelector('.background');
+    backgroundImg.src = 'background.webp';
+
     field = element.querySelector('#field');
 
     user = element.querySelector('#user');
@@ -263,6 +267,7 @@ function createThirdLevel() {
     hitsLeft = element.querySelector('#hits-left');
     points = element.querySelector('#points');
     barrier = element.querySelector('.barrier');
+    quitButton = element.querySelector('#quit-btn');
 
     const blocks = barrier.querySelectorAll('.mine-block');
 
@@ -282,6 +287,7 @@ function createThirdLevel() {
     gameStore.subscribe(GameStoreEvent.HITS_LEFT_CHANGE, onHitsLeftChange);
     gameStore.subscribe(GameStoreEvent.POINTS_CHANGE, onPointsChange);
     window.addEventListener('keydown', userMovementListener);
+    quitButton.addEventListener('click', onQuit);
     reset();
 
     const timeTicker = createInfiniteTicker(timeSpent => {
@@ -293,6 +299,7 @@ function createThirdLevel() {
 
     function dispose () {
         timeTicker.cancel();
+        quitButton.addEventListener('click', onQuit);
         window.removeEventListener('keydown', userMovementListener);
         gameStore.unsubscribe(GameStoreEvent.POINTS_CHANGE, onPointsChange);
         gameStore.unsubscribe(GameStoreEvent.TIME_LEFT_CHANGE, onTimeLeftChange);

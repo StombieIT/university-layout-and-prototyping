@@ -1,0 +1,507 @@
+/*!********************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/layers/menu/menu.scss ***!
+  \********************************************************************************************************************/
+.rating, .levels {
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  padding: 20px;
+}
+
+.level {
+  background-color: #fff;
+  color: #494949;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  perspective: 1000px;
+}
+
+.levels {
+  display: flex;
+  flex-direction: column;
+  animation: 5s rotating linear infinite;
+}
+
+.rating {
+  font-size: 20px;
+  margin-left: 50px;
+  min-width: 600px;
+}
+
+.rating-stat {
+  padding: 5px 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.rating-stat:nth-child(2n) {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.level.__inactive {
+  cursor: default;
+  opacity: 0.7;
+}
+.level + .level {
+  margin-top: 30px;
+}
+
+@keyframes rotating {
+  33% {
+    transform: rotateZ(5deg) rotateY(20deg);
+  }
+  67% {
+    transform: rotateZ(-5deg) rotateY(-20deg);
+  }
+}
+/*!*********************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/index.scss ***!
+  \*********************************************************************************************************/
+#message, .banner {
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  padding: 20px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: Arial;
+}
+
+body {
+  height: 100vh;
+}
+
+ul {
+  list-style: none;
+}
+
+.margin-top {
+  margin-top: 10px;
+}
+
+.space-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.btn {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+#container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(#e66465, #9198e5);
+}
+
+.background {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+}
+
+#field {
+  position: relative;
+  width: 1200px;
+  height: 700px;
+  background-color: gray;
+  overflow: hidden;
+}
+
+#bonfire {
+  position: absolute;
+  bottom: 0;
+  width: 100px;
+}
+#bonfire img {
+  width: 100%;
+}
+
+.steve {
+  width: 120px;
+  transform: scaleX(-1);
+}
+
+.steve.__inverse {
+  transform: unset;
+}
+
+#user,
+#computer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+}
+
+#tnt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+}
+
+#tnt.__active {
+  animation: 1s infinite tnt-throbbing;
+}
+
+.barrier {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  height: fit-content;
+}
+.barrier.__second {
+  top: 0;
+  left: 80%;
+}
+.barrier.__second .mine-block {
+  width: 72px;
+  height: 72px;
+}
+
+.mine-block {
+  width: 128px;
+  height: 128px;
+}
+
+#arrow {
+  width: 100px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(60px) translateY(-50%);
+  transform-origin: -60px;
+}
+
+#force-bar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin: 15px;
+  transform: translateX(-50%);
+  border-radius: 15px;
+  border: 2px solid #fff;
+  overflow: hidden;
+  width: 30vw;
+  height: 30px;
+}
+#force-bar .progress {
+  background: linear-gradient(#e66465, #9198e5);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transform: translateX(-100%);
+}
+
+.game {
+  display: flex;
+}
+
+#right-panel {
+  padding: 0 10px;
+  flex-basis: 300px;
+  flex-shrink: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.banner {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info, #time-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 15px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+#time-left {
+  margin: 5px;
+  font-size: 22px;
+  width: fit-content;
+}
+
+@keyframes tnt-throbbing {
+  50% {
+    transform: translate(-50%, -50%) scale(1.25) rotate(20deg);
+  }
+}
+/*!*****************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/authorization.scss ***!
+  \*****************************************************************************************************************/
+.authorization-popup, #message, .banner {
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  padding: 20px;
+}
+
+.authorization-popup, #message, .banner {
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  padding: 20px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: Arial;
+}
+
+body {
+  height: 100vh;
+}
+
+ul {
+  list-style: none;
+}
+
+.margin-top {
+  margin-top: 10px;
+}
+
+.space-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.btn, #login-submit {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+#container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(#e66465, #9198e5);
+}
+
+.background {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+}
+
+#field {
+  position: relative;
+  width: 1200px;
+  height: 700px;
+  background-color: gray;
+  overflow: hidden;
+}
+
+#bonfire {
+  position: absolute;
+  bottom: 0;
+  width: 100px;
+}
+#bonfire img {
+  width: 100%;
+}
+
+.steve {
+  width: 120px;
+  transform: scaleX(-1);
+}
+
+.steve.__inverse {
+  transform: unset;
+}
+
+#user,
+#computer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+}
+
+#tnt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+}
+
+#tnt.__active {
+  animation: 1s infinite tnt-throbbing;
+}
+
+.barrier {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  height: fit-content;
+}
+.barrier.__second {
+  top: 0;
+  left: 80%;
+}
+.barrier.__second .mine-block {
+  width: 72px;
+  height: 72px;
+}
+
+.mine-block {
+  width: 128px;
+  height: 128px;
+}
+
+#arrow {
+  width: 100px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(60px) translateY(-50%);
+  transform-origin: -60px;
+}
+
+#force-bar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin: 15px;
+  transform: translateX(-50%);
+  border-radius: 15px;
+  border: 2px solid #fff;
+  overflow: hidden;
+  width: 30vw;
+  height: 30px;
+}
+#force-bar .progress {
+  background: linear-gradient(#e66465, #9198e5);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transform: translateX(-100%);
+}
+
+.game {
+  display: flex;
+}
+
+#right-panel {
+  padding: 0 10px;
+  flex-basis: 300px;
+  flex-shrink: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.banner {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info, #time-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 15px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+#time-left {
+  margin: 5px;
+  font-size: 22px;
+  width: fit-content;
+}
+
+@keyframes tnt-throbbing {
+  50% {
+    transform: translate(-50%, -50%) scale(1.25) rotate(20deg);
+  }
+}
+.authorization-popup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  width: 300px;
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#login-field {
+  padding: 10px;
+  border-radius: 15px;
+  border: none;
+}
+
+#login-submit {
+  margin-top: 30px;
+}

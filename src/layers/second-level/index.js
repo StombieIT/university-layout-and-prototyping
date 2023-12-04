@@ -202,6 +202,9 @@ function createSecondLevel() {
     userImg.src = 'steve.webp';
     userImg.alt = 'user';
 
+    const backgroundImg = element.querySelector('.background');
+    backgroundImg.src = 'background.webp';
+
     barriers = Array.from(element.querySelectorAll('.barrier'));
     const blocks = element.querySelectorAll('.mine-block');
 

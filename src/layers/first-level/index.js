@@ -192,6 +192,8 @@ function createFirstLevel() {
     user = element.querySelector('#user');
     const userImg = user.querySelector('img');
 
+    const backgroundImg = element.querySelector('.background');
+    backgroundImg.src = 'background.webp';
 
     rightPanel = element.querySelector('#right-panel');
     timeLeft = element.querySelector('#time-left');
